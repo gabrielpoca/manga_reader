@@ -15,17 +15,23 @@ defmodule Scraper.MangaReaderNet do
   end
 
   def manga(id) do
-    {:ok, %{body: body}} = get("/" <> id)
+    href = "/#{id}"
+    {:ok, %{body: body}} = get(href)
 
     chapters =
       body
       |> Floki.find("#chapterlist a")
       |> Enum.map(fn n ->
         href = Floki.attribute(n, "href") |> hd
-        %{id: String.trim(href, "/"), href: href, name: Floki.text(n)}
+        %{chapter_id: String.trim(href, "/"), href: href, name: Floki.text(n)}
       end)
 
-    %{manga_id: id, chapters: chapters}
+    name =
+      body
+      |> Floki.find("#mangaproperties h1")
+      |> Floki.text()
+
+    %{manga_id: id, href: href, name: name, chapters: chapters}
   end
 
   def chapter(chapter_id) do
