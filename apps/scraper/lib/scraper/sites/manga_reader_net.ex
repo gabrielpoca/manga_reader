@@ -1,7 +1,5 @@
-defmodule Scraper.MangaReaderNet do
-  use Tesla
-
-  plug Tesla.Middleware.BaseUrl, "https://www.mangareader.net"
+defmodule Scraper.Sites.MangaReaderNet do
+  alias Scraper.Sites.Cache
 
   def all() do
     {:ok, %{body: body}} = get("/alphabetical")
@@ -53,13 +51,41 @@ defmodule Scraper.MangaReaderNet do
       end)
       |> Enum.to_list()
 
+    name =
+      first_page
+      |> Floki.find("#mangainfo h1")
+      |> Floki.text()
+
     [_, manga_id] = Regex.run(~r/(.*)\/.*/, chapter_id)
 
     %{
+      name: name,
       manga_id: manga_id,
       chapter_id: chapter_id,
       pages: [parse_chapter_page(first_page) | other_chapters]
     }
+  end
+
+  defp get(url) do
+    full_url = "https://www.mangareader.net#{url}"
+
+    case get_from_cache(full_url) do
+      {:not_found} ->
+        {:ok, res} = Tesla.get(full_url)
+        set_in_cache(full_url, res)
+        {:ok, res}
+
+      {:ok, res} ->
+        {:ok, res}
+    end
+  end
+
+  defp get_from_cache(url) do
+    Cache.get(url)
+  end
+
+  defp set_in_cache(url, response) do
+    Cache.set(url, response)
   end
 
   defp parse_chapter_page(body) do

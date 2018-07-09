@@ -1,6 +1,8 @@
 defmodule Api.Schema do
   use Absinthe.Schema
 
+  alias Api.Resolvers
+
   query do
     field :me, :user do
       resolve(fn _, _ ->
@@ -9,25 +11,23 @@ defmodule Api.Schema do
     end
 
     field :mangas, list_of(:manga_simple) do
-      resolve(fn _, _ ->
-        {:ok, Scraper.MangaReaderNet.all()}
-      end)
+      arg(:site, :string)
+
+      resolve(&Resolvers.all/3)
     end
 
     field :manga, :manga do
+      arg(:site, :string)
       arg(:manga_id, non_null(:id))
 
-      resolve(fn %{manga_id: manga_id}, _ ->
-        {:ok, Scraper.MangaReaderNet.manga(manga_id)}
-      end)
+      resolve(&Resolvers.manga/3)
     end
 
     field :chapter, :chapter do
+      arg(:site, :string)
       arg(:chapter_id, non_null(:id))
 
-      resolve(fn %{chapter_id: chapter_id}, _ ->
-        {:ok, Scraper.MangaReaderNet.chapter(chapter_id)}
-      end)
+      resolve(&Resolvers.chapter/3)
     end
   end
 
@@ -57,7 +57,7 @@ defmodule Api.Schema do
 
   object :chapter do
     field :chapter_id, :id
-    field :href, :string
+    field :manga_id, :string
     field :name, :string
     field :pages, list_of(:string)
   end

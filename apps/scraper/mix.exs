@@ -26,7 +26,8 @@ defmodule Scraper.Mixfile do
     [
       {:floki, "~> 0.20.0"},
       {:tesla, "~> 1.0.0"},
-      {:flow, "~> 0.14"}
+      {:flow, "~> 0.14"},
+      {:timex, "~> 3.1"}
     ]
   end
 end

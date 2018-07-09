@@ -10,6 +10,7 @@ defmodule Scraper.Application do
     children = [
       # Starts a worker by calling: Scraper.Worker.start_link(arg)
       # {Scraper.Worker, arg},
+      {Scraper.Sites.Cache, %{}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
