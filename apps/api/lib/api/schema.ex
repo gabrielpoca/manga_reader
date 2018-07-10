@@ -31,9 +31,19 @@ defmodule Api.Schema do
     end
   end
 
+  mutation do
+    field :create_user, type: :user do
+      arg(:username, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&Resolvers.create_user/3)
+      middleware(Api.Middlewares.HandleChangesetErrors)
+    end
+  end
+
   object :user do
-    field :id, :id
     field :username, :string
+    field :token, :string
   end
 
   object :manga_simple do

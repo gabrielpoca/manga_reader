@@ -1,0 +1,4 @@
+#!/bin/sh
+
+source .envrc.test
+mix test

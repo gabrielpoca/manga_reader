@@ -1,0 +1,4 @@
+#!/bin/sh
+
+source .envrc
+iex -S mix phx.server
