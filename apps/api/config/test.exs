@@ -6,5 +6,7 @@ config :api, Api.Endpoint,
   http: [port: 4001],
   server: false
 
+config :api, Api.Repo, pool: Ecto.Adapters.SQL.Sandbox
+
 # Print only warnings and errors during test
 config :logger, level: :warn

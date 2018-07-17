@@ -7,9 +7,18 @@ defmodule Scraper.Sites.MangaReaderNet do
     body
     |> Floki.find("ul.series_alpha li a")
     |> Enum.map(fn n ->
-      href = Floki.attribute(n, "href") |> hd
-      %{manga_id: String.trim(href, "/"), href: href, name: Floki.text(n)}
+      href = n |> Floki.attribute("href") |> hd
+      name = n |> Floki.text() |> String.trim()
+      manga_id = href |> String.trim("/")
+
+      %{
+        manga_id: manga_id,
+        href: href,
+        name: name,
+        cover: "https://s2.mangareader.net/cover/#{href}/#{href}-l0.jpg"
+      }
     end)
+    |> Enum.sort_by(&Map.fetch(&1, :name))
   end
 
   def manga(id) do
@@ -20,8 +29,16 @@ defmodule Scraper.Sites.MangaReaderNet do
       body
       |> Floki.find("#chapterlist a")
       |> Enum.map(fn n ->
-        href = Floki.attribute(n, "href") |> hd
-        %{chapter_id: String.trim(href, "/"), href: href, name: Floki.text(n)}
+        href = n |> Floki.attribute("href") |> hd
+        name = n |> Floki.text() |> String.trim()
+        [_, chapter_id] = Regex.run(~r/\/?.*\/(.*)\/?/, href)
+
+        %{
+          manga_id: id,
+          chapter_id: chapter_id,
+          href: href,
+          name: name
+        }
       end)
 
     name =
@@ -29,40 +46,45 @@ defmodule Scraper.Sites.MangaReaderNet do
       |> Floki.find("#mangaproperties h1")
       |> Floki.text()
 
-    %{manga_id: id, href: href, name: name, chapters: chapters}
+    cover =
+      body
+      |> Floki.find("#mangaimg img")
+      |> Floki.attribute("src")
+
+    %{manga_id: id, href: href, name: name, chapters: chapters, cover: cover}
   end
 
-  def chapter(chapter_id) do
-    {:ok, %{body: first_page}} = get("/" <> chapter_id)
+  def chapter(manga_id, chapter_id) do
+    {:ok, %{body: first_page}} = get("/#{manga_id}/#{chapter_id}")
 
-    {last_chapter_nr, ""} =
+    {last_page_nr, ""} =
       first_page
       |> Floki.find("#selectpage option:last-child")
       |> Floki.text()
       |> Integer.parse()
 
-    other_chapters =
-      2..last_chapter_nr
+    other_pages =
+      2..last_page_nr
       |> Flow.from_enumerable()
       |> Flow.partition()
-      |> Flow.map(fn chapter ->
-        {:ok, %{body: body}} = get("/#{chapter_id}/#{chapter}")
-        parse_chapter_page(body)
+      |> Flow.map(fn page_id ->
+        {:ok, %{body: body}} = get("/#{manga_id}/#{chapter_id}/#{page_id}")
+
+        parse_page_body(page_id, body)
       end)
       |> Enum.to_list()
+      |> Enum.sort_by(&Map.get(&1, :page_id))
 
     name =
       first_page
       |> Floki.find("#mangainfo h1")
       |> Floki.text()
 
-    [_, manga_id] = Regex.run(~r/(.*)\/.*/, chapter_id)
-
     %{
       name: name,
       manga_id: manga_id,
       chapter_id: chapter_id,
-      pages: [parse_chapter_page(first_page) | other_chapters]
+      pages: [parse_page_body(1, first_page) | other_pages]
     }
   end
 
@@ -88,10 +110,13 @@ defmodule Scraper.Sites.MangaReaderNet do
     Cache.set(url, response)
   end
 
-  defp parse_chapter_page(body) do
-    body
-    |> Floki.find(".episode-table img")
-    |> Floki.attribute("src")
-    |> hd
+  defp parse_page_body(page_id, body) do
+    src =
+      body
+      |> Floki.find(".episode-table img")
+      |> Floki.attribute("src")
+      |> hd
+
+    %{page_id: page_id, src: src}
   end
 end
