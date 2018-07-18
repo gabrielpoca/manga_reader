@@ -5,9 +5,7 @@ defmodule Api.Schema do
 
   query do
     field :me, :user do
-      resolve(fn _, _ ->
-        {:ok, %{id: 1, username: "g"}}
-      end)
+      resolve(&Resolvers.me/3)
     end
 
     field :mangas, list_of(:manga_simple) do
@@ -49,14 +47,12 @@ defmodule Api.Schema do
 
   object :manga_simple do
     field :manga_id, :id
-    field :href, :string
     field :name, :string
     field :cover, :string
   end
 
   object :manga do
     field :manga_id, :id
-    field :href, :string
     field :name, :string
     field :chapters, list_of(:chapter_simple)
     field :cover, :string
@@ -65,7 +61,6 @@ defmodule Api.Schema do
   object :chapter_simple do
     field :chapter_id, :id
     field :manga_id, :string
-    field :href, :string
     field :name, :string
   end
 

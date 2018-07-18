@@ -13,10 +13,6 @@ defmodule Api.Guardian do
     {:ok, sub}
   end
 
-  def subject_for_token(_, _) do
-    {:error, :reason_for_error}
-  end
-
   def resource_from_claims(claims) do
     # Here we'll look up our resource from the claims, the subject can be
     # found in the `"sub"` key. In `above subject_for_token/2` we returned
@@ -24,9 +20,5 @@ defmodule Api.Guardian do
     id = claims["sub"]
     resource = Query.get_by(id: id)
     {:ok, resource}
-  end
-
-  def resource_from_claims(_claims) do
-    {:error, :reason_for_error}
   end
 end
