@@ -3,7 +3,7 @@ defmodule Scraper.VcrCase do
 
   using do
     quote do
-      use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
+      use ExVCR.Mock, adapter: ExVCR.Adapter.Httpc
     end
   end
 end
