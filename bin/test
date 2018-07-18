@@ -1,4 +1,27 @@
 #!/bin/sh
 
 source .envrc.test
-mix test
+
+set -e
+
+test_path=$1
+
+if [ -z $test_path ]; then
+  # if not argument given, run the whole stui
+  mix test
+elif [[ $test_path =~ apps\/[^/]+\/test ]]; then
+  # if a test path:line is given, enter the specific app, and run that test
+  str=$(echo $test_path | sed -E 's/apps\/([^/]+)\/(.*)/\1 \2/')
+  components=($str)
+
+  app=${components[0]}
+  file=${components[1]}
+
+  echo $file
+
+  mix cmd --app $app mix test $file --color
+else
+  app=$(basename $test_path)
+
+  mix cmd --app $app mix test --color
+fi
