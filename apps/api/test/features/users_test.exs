@@ -3,7 +3,7 @@ defmodule Api.Features.AuthenticationTest do
   use Api.VcrCase
 
   describe "user management" do
-    test "creates a new user", %{conn: conn} do
+    test "creates a user", %{conn: conn} do
       query = """
         mutation RegisterUser($username: String!, $password: String!) {
           createUser(username: $username, password: $password) {

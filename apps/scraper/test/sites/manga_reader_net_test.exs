@@ -11,7 +11,7 @@ defmodule Scraper.Sites.MangaReaderNetTest do
         mangas = MangaReaderNet.all()
         first_manga = mangas |> hd
 
-        assert Enum.count(mangas) == 4632
+        assert Enum.count(mangas) == 4634
         assert first_manga[:manga_id] == "000000-ultra-black"
         assert first_manga[:cover]
         assert first_manga[:name]
@@ -27,7 +27,6 @@ defmodule Scraper.Sites.MangaReaderNetTest do
         first_chapter = chapters |> hd
 
         assert manga[:manga_id] == "naruto"
-        assert manga[:href]
         assert manga[:cover]
         assert manga[:name]
         assert Enum.count(chapters) == 700

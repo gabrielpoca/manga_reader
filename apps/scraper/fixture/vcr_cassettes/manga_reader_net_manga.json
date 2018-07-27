@@ -19,17 +19,17 @@
       "headers": {
         "cache-control": "no-cache, must-revalidate",
         "connection": "keep-alive",
-        "date": "Wed, 18 Jul 2018 07:48:26 GMT",
+        "date": "Sat, 21 Jul 2018 10:41:13 GMT",
         "pragma": "no-cache",
         "server": "cloudflare",
         "vary": "Accept-Encoding",
         "content-length": "100274",
         "content-type": "text/html; charset=utf-8",
         "expires": "Tue, 01 Nov 1980 15:00:00 GMT",
-        "set-cookie": "__cfduid=dfb0fc400dd90a60f56f057055afefccc1531900106; expires=Thu, 18-Jul-19 07:48:26 GMT; path=/; domain=.mangareader.net; HttpOnly; Secure",
+        "set-cookie": "__cfduid=df050fdfe77bbb1e842c24b29768c4ccc1532169673; expires=Sun, 21-Jul-19 10:41:13 GMT; path=/; domain=.mangareader.net; HttpOnly; Secure",
         "x-content-type-options": "nosniff",
         "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
-        "cf-ray": "43c35891cb0b624e-LIS"
+        "cf-ray": "43dd0dc98aeb624e-LIS"
       },
       "status_code": [
         "HTTP/1.1",
