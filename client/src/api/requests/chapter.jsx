@@ -46,9 +46,13 @@ export default class RequestChapter extends React.Component {
     const { mangaId, chapterId } = this.props.params;
 
     this.updateData(mangaId, chapterId);
+    this.cancelRequest();
 
-    client
-      .request(query, { mangaId, chapterId })
+    this.request = cancelablePromise(
+      client.request(query, { mangaId, chapterId })
+    );
+
+    this.request.promise
       .then(data => {
         return Promise.all([
           db.mangas.put(data.manga),
@@ -65,8 +69,13 @@ export default class RequestChapter extends React.Component {
     const { mangaId, chapterId } = props.params;
 
     this.updateData(mangaId, chapterId);
+    this.cancelRequest();
 
-    client.request(query, { mangaId, chapterId }).then(data => {
+    this.request = cancelablePromise(
+      client.request(query, { mangaId, chapterId })
+    );
+
+    this.request.promise.then(data => {
       return Promise.all([
         db.mangas.put(data.manga),
         db.chapters.put(data.chapter)
@@ -75,6 +84,14 @@ export default class RequestChapter extends React.Component {
         .catch(error => this.setState({ loading: false, error }));
     });
   }
+
+  componentWillUnmount() {
+    this.cancelRequest();
+  }
+
+  cancelRequest = () => {
+    if (this.request) this.request.cancel();
+  };
 
   updateData = (mangaId, chapterId) => {
     clearInterval(this.timer);
