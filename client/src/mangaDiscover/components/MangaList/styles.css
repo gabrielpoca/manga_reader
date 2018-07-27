@@ -1,0 +1,17 @@
+.list {
+  display: grid;
+  grid-column-gap: var(--spacing-large);
+  grid-row-gap: var(--spacing-large);
+  grid-template-columns: repeat(4, 1fr);
+
+  @media (--tablet) {
+    grid-column-gap: var(--spacing-normal);
+    grid-row-gap: var(--spacing-normal);
+  }
+
+  @media (--phone) {
+    grid-column-gap: var(--spacing-small);
+    grid-row-gap: var(--spacing-small);
+    grid-template-columns: auto;
+  }
+}

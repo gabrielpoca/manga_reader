@@ -1,0 +1,17 @@
+.root {
+  align-items: center;
+  background-color: var(--color-black);
+  border: none;
+  color: var(--color-white);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-size: var(--fontSize-normal);
+  height: 48px;
+  letter-spacing: 1px;
+  padding: 0 var(--spacing-normal);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all .2s ease-in-out;
+  width: auto;
+}

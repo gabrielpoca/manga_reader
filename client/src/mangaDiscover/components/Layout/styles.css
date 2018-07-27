@@ -1,0 +1,17 @@
+.root {
+  padding-bottom: var(--spacing-large);
+  margin: 0 auto;
+}
+
+.header {
+  margin-top: var(--spacing-small);
+  margin-bottom: var(--spacing-large);
+
+  color: red;
+}
+
+.content {
+  max-width: var(--maxWidth);
+  padding: 0 var(--spacing-normal);
+  margin: 0 auto;
+}

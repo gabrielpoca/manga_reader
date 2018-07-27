@@ -1,0 +1,29 @@
+.root,
+.h1 {
+  color: var(--text-color);
+
+  font-size: var(--fontSize-xlarge);
+  font-weight: normal;
+  line-height: var(--fontSize-xlarge-height);
+  text-decoration: none;
+
+  > a {
+    color: var(--color-black);
+  }
+}
+
+.h2 {
+  font-size: var(--fontSize-large);
+  line-height: var(--fontSize-large-height);
+}
+
+.h3 {
+  font-size: var(--fontSize-normal);
+  font-weight: bold;
+  line-height: var(--fontSize-normal-height);
+}
+
+.h4 {
+  font-size: var(--fontSize-small);
+  line-height: var(--fontSize-small-height);
+}

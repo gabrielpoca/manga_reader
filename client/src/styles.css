@@ -1,0 +1,59 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body, :global(#root), :global([data-reactroot='']) {
+  --base: 20px;
+
+  --spacing-large: 48px;
+  --spacing-normal: 28px;
+  --spacing-small: 20px;
+  --spacing-xlarge: 84px;
+  --spacing-xsmall: 16px;
+
+  --fontSize-large-height: 36px;
+  --fontSize-large: 28px;
+  --fontSize-normal-height: 28px;
+  --fontSize-normal: 20px;
+  --fontSize-small-height: 20px;
+  --fontSize-small: 16px;
+  --fontSize-xlarge-height: 48px;
+  --fontSize-xlarge: 36px;
+
+  --color-white: #FFFFFF;
+  --color-darkBlue: #1a1b27;
+  --color-black: #383945;
+  --color-lightBlue: #f4f5f7;
+  --color-gray: #AFAFAF;
+
+  --maxWidth: 1024px;
+
+  --text-color: var(--color-black);
+  --background-color: var(--color-white);
+  height: 100%;
+
+  min-height: 100%;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--fontSize-normal);
+  line-height: var(--fontSize-normal-height);
+
+  @media (--tablet) {
+    --spacing-large: 36px;
+    --spacing-normal: 20px;
+    --spacing-small: 16px;
+    --spacing-xlarge: 64px;
+    --spacing-xsmall: 12px;
+
+    --fontSize-large-height: 28px;
+    --fontSize-large: 20px;
+    --fontSize-normal-height: 20px;
+    --fontSize-normal: 16px;
+    --fontSize-small-height: 16px;
+    --fontSize-small: 12px;
+    --fontSize-xlarge-height: 36px;
+    --fontSize-xlarge: 28px;
+  }
+}

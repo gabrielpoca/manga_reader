@@ -1,0 +1,15 @@
+manga.gabrielpoca.com
+
+root /app
+
+gzip
+
+log
+errors
+
+proxy /api api:4000
+
+rewrite {
+  if {path} not_match ^/api
+  to {path} {path}/ /
+}

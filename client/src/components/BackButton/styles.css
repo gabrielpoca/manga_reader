@@ -1,0 +1,13 @@
+.root {
+  display: block;
+  width: 50px;
+
+  background: transparent;
+  border: 0;
+}
+
+.icon {
+  display: inline-block;
+  width: 12px;
+  height: 30px;
+}

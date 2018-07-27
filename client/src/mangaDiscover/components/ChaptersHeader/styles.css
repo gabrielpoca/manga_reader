@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.read {
+  margin-right: var(--spacing-xsmall);
+  width: var(--spacing-large);
+}
+
+.chapters {
+  flex-grow: 1;
+}

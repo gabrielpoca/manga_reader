@@ -1,0 +1,26 @@
+.root {
+}
+
+.content {
+  max-width: var(--maxWidth);
+  padding: var(--spacing-large) var(--spacing-normal);
+  margin: 0 auto;
+}
+
+.header {
+  margin-top: var(--spacing-small);
+  margin-bottom: var(--spacing-large);
+}
+
+.heading, .info {
+  max-width: 600px;
+  margin-bottom: var(--spacing-small);
+}
+
+.button {
+  margin-bottom: var(--spacing-normal);
+}
+
+.back {
+  margin-bottom: var(--spacing-large);
+}

@@ -1,0 +1,32 @@
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  text-decoration: none;
+  font-size: var(--fontSize-normal);
+  line-height: var(--fontSize-normal-height);
+  color: var(--color-black);
+  flex-grow: 1;
+}
+
+.icon {
+  --download-icon-color: var(--color-darkBlue);
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  height: 36px;
+  min-width: 36px;
+  width: 36px;
+}
+
+.read {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: var(--spacing-xsmall);
+  padding-right: var(--spacing-normal);
+  width: var(--spacing-large);
+}

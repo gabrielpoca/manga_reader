@@ -1,0 +1,32 @@
+<svg width="51" height="41" viewBox="0 0 51 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Group</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-25257 -230)">
+<g id="Group">
+<g id="Rectangle">
+<use xlink:href="#path0_fill" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)" fill="#FFFFFF"/>
+<mask id="mask0_outline_ins">
+<use xlink:href="#path0_fill" fill="white" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)"/>
+</mask>
+<g mask="url(#mask0_outline_ins)">
+<use xlink:href="#path1_stroke_2x" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)" fill="#383945"/>
+</g>
+</g>
+<g id="Ellipse">
+<use xlink:href="#path2_fill" transform="translate(25257 230)" fill="#FFFFFF"/>
+<mask id="mask1_outline_ins">
+<use xlink:href="#path2_fill" fill="white" transform="translate(25257 230)"/>
+</mask>
+<g mask="url(#mask1_outline_ins)">
+<use xlink:href="#path3_stroke_2x" transform="translate(25257 230)" fill="#383945"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 0L 23.3778 0L 23.3778 9.81048L 0 9.81048L 0 0Z"/>
+<path id="path1_stroke_2x" d="M 0 0L 0 -3L -3 -3L -3 0L 0 0ZM 23.3778 0L 26.3778 0L 26.3778 -3L 23.3778 -3L 23.3778 0ZM 23.3778 9.81048L 23.3778 12.8105L 26.3778 12.8105L 26.3778 9.81048L 23.3778 9.81048ZM 0 9.81048L -3 9.81048L -3 12.8105L 0 12.8105L 0 9.81048ZM 0 3L 23.3778 3L 23.3778 -3L 0 -3L 0 3ZM 20.3778 0L 20.3778 9.81048L 26.3778 9.81048L 26.3778 0L 20.3778 0ZM 23.3778 6.81048L 0 6.81048L 0 12.8105L 23.3778 12.8105L 23.3778 6.81048ZM 3 9.81048L 3 0L -3 0L -3 9.81048L 3 9.81048Z"/>
+<path id="path2_fill" d="M 38.5091 19.0962C 38.5091 29.6427 29.8885 38.1924 19.2545 38.1924C 8.62055 38.1924 0 29.6427 0 19.0962C 0 8.54966 8.62055 0 19.2545 0C 29.8885 0 38.5091 8.54966 38.5091 19.0962Z"/>
+<path id="path3_stroke_2x" d="M 35.5091 19.0962C 35.5091 27.9626 28.2551 35.1924 19.2545 35.1924L 19.2545 41.1924C 31.522 41.1924 41.5091 31.3229 41.5091 19.0962L 35.5091 19.0962ZM 19.2545 35.1924C 10.254 35.1924 3 27.9626 3 19.0962L -3 19.0962C -3 31.3229 6.9871 41.1924 19.2545 41.1924L 19.2545 35.1924ZM 3 19.0962C 3 10.2298 10.254 3 19.2545 3L 19.2545 -3C 6.9871 -3 -3 6.8695 -3 19.0962L 3 19.0962ZM 19.2545 3C 28.2551 3 35.5091 10.2298 35.5091 19.0962L 41.5091 19.0962C 41.5091 6.8695 31.522 -3 19.2545 -3L 19.2545 3Z"/>
+</defs>
+</svg>

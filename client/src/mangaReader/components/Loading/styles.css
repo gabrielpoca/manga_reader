@@ -1,0 +1,21 @@
+.root {
+  --text-color: var(--color-gray);
+  --background-color: var(--color-darkBlue);
+
+  background-color: var(--background-color);
+  height: 100%;
+  padding: var(--spacing-large) 0;
+}
+
+.name {
+  display: block;
+  margin-bottom: 180px;
+  padding: 0 var(--spacing-normal);
+  text-decoration: none;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,22 @@
+.root {
+}
+
+.content {
+  width: 600px;
+  max-width: var(--maxWidth);
+  padding: var(--spacing-large) var(--spacing-normal);
+  margin: 0 auto;
+}
+
+.header {
+  margin-top: var(--spacing-small);
+  margin-bottom: var(--spacing-normal);
+}
+
+.p {
+  margin-top: var(--spacing-normal);
+
+  > a {
+    color: inherit;
+  }
+}

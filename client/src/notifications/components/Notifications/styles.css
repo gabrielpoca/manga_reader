@@ -1,0 +1,10 @@
+.root {
+  position: fixed;
+  top: var(--spacing-small);
+  right: var(--spacing-small);
+  z-index: 2;
+}
+
+.notification {
+  margin-bottom: var(--spacing-normal);
+}

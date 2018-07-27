@@ -1,0 +1,18 @@
+.root {
+  --icon-width: 40px;
+  --icon-height: 30px;
+
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 var(--spacing-normal);
+}
+
+.search {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.menu {
+  flex-grow: 0;
+}
