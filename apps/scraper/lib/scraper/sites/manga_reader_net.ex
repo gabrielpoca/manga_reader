@@ -43,7 +43,7 @@ defmodule Scraper.Sites.MangaReaderNet do
 
     name =
       body
-      |> Floki.find("#mangaproperties h1")
+      |> Floki.find("#mangaproperties .aname")
       |> Floki.text()
 
     cover =
