@@ -56,7 +56,9 @@ export default class RequestManga extends React.Component {
   updateData = mangaId => {
     db.mangas
       .get({ mangaId })
-      .then(manga => this.setState({ manga, loading: false, error: null }))
+      .then(
+        manga => manga && this.setState({ manga, loading: false, error: null })
+      )
       .catch(error => this.setState({ manga: null, loading: false, error }));
   };
 
