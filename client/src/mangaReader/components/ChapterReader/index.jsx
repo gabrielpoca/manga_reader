@@ -47,7 +47,7 @@ class ChapterReader extends React.Component {
   renderBack = () => {
     const chapterNr = this.props.chapter.chapterId;
 
-    if (chapterNr > 0) {
+    if (chapterNr > 1) {
       return (
         <Link
           className={styles.link}
@@ -56,6 +56,8 @@ class ChapterReader extends React.Component {
           Previous
         </Link>
       );
+    } else {
+      return <span />;
     }
 
     return null;

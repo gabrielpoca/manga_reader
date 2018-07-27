@@ -2,6 +2,7 @@ import * as React from 'react';
 import CSSModules from 'react-css-modules';
 import { Link } from 'react-router-dom';
 import { isArray } from 'lodash';
+import _ from 'lodash';
 
 import ChapterItem from '../ChapterItem';
 import Cover from '../Cover';
@@ -21,7 +22,13 @@ class MangaShow extends React.Component {
 
     if (!ongoingChapter) {
       return (
-        <Button tag={Link} to={`/manga/${manga.mangaId}/chapter/1`}>
+        <Button
+          tag={Link}
+          to={`/manga/${manga.mangaId}/chapter/${_.get(
+            manga,
+            'chapters.0.chapterId'
+          )}`}
+        >
           Read
         </Button>
       );
