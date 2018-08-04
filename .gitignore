@@ -20,3 +20,4 @@ erl_crash.dump
 *.ez
 .elixir_ls/
 priv/static/
+apps/api/priv/static/

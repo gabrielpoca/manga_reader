@@ -1,0 +1,11 @@
+.git/
+node_modules/
+deps/
+_build/
+erl_crash.dump
+priv/static/
+apps/api/priv/static/
+.elixir_ls/
+.history/
+.vscode/
+.envrc

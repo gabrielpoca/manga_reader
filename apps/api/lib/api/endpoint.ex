@@ -1,6 +1,13 @@
 defmodule Api.Endpoint do
   use Phoenix.Endpoint, otp_app: :api
 
+  plug(
+    Plug.Static,
+    at: "/",
+    from: {:api, "priv/static"},
+    gzip: false
+  )
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
@@ -30,5 +37,6 @@ defmodule Api.Endpoint do
     key: "_api_key",
     signing_salt: "DBoBPP/6"
 
+  plug Api.FrontEndRenderer
   plug Api.Router
 end
