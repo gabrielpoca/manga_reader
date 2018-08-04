@@ -1,34 +1,9 @@
 import React from 'react';
 
 import cancelablePromise from './cancelablePromise';
-import db from './database';
+import db from '../database';
 
-import client from './client';
-
-const query = `
-    query($mangaId: String!, $chapterId: ID!) {
-      chapter(mangaId: $mangaId, chapterId: $chapterId) {
-        name
-        mangaId
-        chapterId
-        pages {
-          pageId
-          src
-        }
-      }
-
-      manga(mangaId: $mangaId) {
-        name
-        mangaId
-        cover
-        chapters {
-          name
-          chapterId
-          mangaId
-        }
-      }
-    }
-  `;
+import { get } from '../query/chapter';
 
 export default class RequestChapter extends React.Component {
   constructor() {
@@ -48,9 +23,7 @@ export default class RequestChapter extends React.Component {
     this.updateData(mangaId, chapterId);
     this.cancelRequest();
 
-    this.request = cancelablePromise(
-      client.request(query, { mangaId, chapterId })
-    );
+    this.request = cancelablePromise(get(mangaId, chapterId));
 
     this.request.promise
       .then(data => {
@@ -71,9 +44,7 @@ export default class RequestChapter extends React.Component {
     this.updateData(mangaId, chapterId);
     this.cancelRequest();
 
-    this.request = cancelablePromise(
-      client.request(query, { mangaId, chapterId })
-    );
+    this.request = cancelablePromise(get(mangaId, chapterId));
 
     this.request.promise.then(data => {
       return Promise.all([
@@ -108,7 +79,9 @@ export default class RequestChapter extends React.Component {
 
         this.setState({ loading: false, chapter, manga });
       })
-      .catch(error => this.setState({ loading: false, error, data: null }));
+      .catch(error =>
+        this.setState({ loading: false, error, chapter: null, manga: null })
+      );
   };
 
   render() {

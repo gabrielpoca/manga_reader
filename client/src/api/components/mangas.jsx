@@ -1,17 +1,7 @@
 import React from 'react';
 
-import db from './database';
-import client from './client';
-
-const query = `
-    query {
-      mangas {
-        name
-        mangaId
-        cover
-      }
-    }
-  `;
+import db from '../database';
+import { get } from '../query/mangas';
 
 export default class RequestMangas extends React.Component {
   constructor() {
@@ -32,10 +22,10 @@ export default class RequestMangas extends React.Component {
 
     this.updateData();
 
-    client
-      .request(query, {})
-      .then(response => db.mangas.bulkPut(response.mangas))
-      .then(this.updateData);
+    get()
+      .then(response => db.mangas.bulkAdd(response.mangas))
+      .then(this.updateData)
+      .catch(err => console.log(err));
   }
 
   componentWillUnmount() {
@@ -54,11 +44,11 @@ export default class RequestMangas extends React.Component {
   toggleOnline = () => {
     db.mangas
       .toArray()
-      .then(mangas =>
+      .then(mangas => {
         this.setState({
           response: { loading: false, mangas }
-        })
-      )
+        });
+      })
       .catch(() =>
         this.setState({
           response: { loading: false, mangas: null }
@@ -66,20 +56,20 @@ export default class RequestMangas extends React.Component {
       );
   };
 
-  toggleOffline = () => {
-    db.mangas
-      .where('chapters')
-      .toArray()
-      .then(mangas =>
-        this.setState({
-          response: { loading: false, mangas }
-        })
-      )
-      .catch(() =>
-        this.setState({
-          response: { loading: false, mangas: null }
-        })
-      );
+  toggleOffline = async () => {
+    try {
+      const mangas = await db.mangas
+        .filter(m => m.chapters && m.chapters.length > 0)
+        .toArray();
+
+      this.setState({
+        response: { loading: false, mangas }
+      });
+    } catch (err) {
+      this.setState({
+        response: { loading: false, mangas: null }
+      });
+    }
   };
 
   render() {
