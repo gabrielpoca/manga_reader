@@ -8,7 +8,9 @@ defmodule Api.FrontEndRenderer do
   def call(conn, _opts) do
     index_file = Application.app_dir(:api, "/priv/static/index.html")
 
-    Plug.Conn.send_file(conn, 200, index_file)
+    conn
+    |> Plug.Conn.put_resp_header("content-type", "text/html; charset=utf-8")
+    |> Plug.Conn.send_file(200, index_file)
     |> Plug.Conn.halt()
   end
 end
