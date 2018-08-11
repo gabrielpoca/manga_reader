@@ -5,6 +5,7 @@ defmodule Api.Repo.Migrations.CreateUser do
     create table(:users) do
       add :username, :string, unique: true, null: false
       add :hashed_password, :string, null: false
+      add :progress, :map, default: %{}
       timestamps()
     end
 

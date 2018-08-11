@@ -3,6 +3,8 @@ defmodule Api.Schema do
 
   alias Api.Resolvers
 
+  import_types(Api.Schema.Types.JSON)
+
   query do
     field :me, :user do
       resolve(&Resolvers.me/3)
@@ -38,11 +40,25 @@ defmodule Api.Schema do
       resolve(&Resolvers.create_user/3)
       middleware(Api.Middlewares.HandleChangesetErrors)
     end
+
+    field :update_progress, type: :user do
+      arg(:read_chapters_by_manga_id, non_null(:json))
+      arg(:ongoing_chapter_by_manga_id, non_null(:json))
+
+      resolve(&Resolvers.update_progress/3)
+      middleware(Api.Middlewares.HandleChangesetErrors)
+    end
   end
 
   object :user do
     field :username, :string
     field :token, :string
+    field :progress, :progress
+  end
+
+  object :progress do
+    field :read_chapters_by_manga_id, :json
+    field :ongoing_chapter_by_manga_id, :json
   end
 
   object :manga_simple do

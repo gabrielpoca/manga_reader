@@ -48,5 +48,40 @@ defmodule Api.Features.AuthenticationTest do
       assert res["data"]["me"]["username"] == "gabrielpoca"
       assert res["data"]["me"]["token"]
     end
+
+    test "updates a user's progress", %{conn: conn} do
+      {:ok, user} =
+        Api.Users.Query.insert(%{username: "gabrielpoca", password: "1234 "})
+
+      query = """
+        mutation UpdateProgress($readChaptersByMangaId: Json!, $ongoingChapterByMangaId: Json!) {
+          updateProgress(readChaptersByMangaId: $readChaptersByMangaId, ongoingChapterByMangaId: $ongoingChapterByMangaId) {
+            progress {
+              readChaptersByMangaId
+              ongoingChapterByMangaId
+            }
+          }
+        }
+      """
+
+      res =
+        conn
+        |> authenticate_user(user)
+        |> graphql_query(%{
+          query: query,
+          variables: %{
+            readChaptersByMangaId: Poison.encode!(%{a: "gabrielpoca"}),
+            ongoingChapterByMangaId: Poison.encode!(%{b: "1234"})
+          }
+        })
+
+      assert res["data"]["updateProgress"]["progress"]["readChaptersByMangaId"][
+               "a"
+             ] == "gabrielpoca"
+
+      assert res["data"]["updateProgress"]["progress"][
+               "ongoingChapterByMangaId"
+             ]["b"] == "1234"
+    end
   end
 end

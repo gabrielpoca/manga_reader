@@ -4,6 +4,7 @@ defmodule Api.Users.Schema do
   import Ecto.Changeset
 
   alias Api.Password
+  alias Api.Users.Progress
 
   @required_fields ~w(username password)
 
@@ -11,6 +12,7 @@ defmodule Api.Users.Schema do
     field :username, :string
     field :hashed_password, :string
     field :password, :string, virtual: true
+    embeds_one(:progress, Progress)
 
     timestamps()
   end
@@ -21,6 +23,13 @@ defmodule Api.Users.Schema do
     |> unique_constraint(:username, name: :unique_usernames)
     |> validate_required([:username, :password])
     |> generate_password_hash()
+  end
+
+  def progress_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [])
+    |> cast_embed(:progress)
+    |> validate_required([:progress])
   end
 
   defp generate_password_hash(changeset) do

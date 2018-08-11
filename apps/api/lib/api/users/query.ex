@@ -12,4 +12,10 @@ defmodule Api.Users.Query do
     |> Schema.changeset(user)
     |> Repo.insert()
   end
+
+  def update_progress(id, params) do
+    %Schema{id: id}
+    |> Schema.progress_changeset(params)
+    |> Repo.update()
+  end
 end

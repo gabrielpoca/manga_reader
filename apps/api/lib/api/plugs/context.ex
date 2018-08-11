@@ -20,7 +20,7 @@ defmodule Api.Plugs.Context do
          {:ok, current_user} <- authorize(token) do
       %{current_user: current_user}
     else
-      _ -> %{}
+      error -> %{}
     end
   end
 

@@ -21,8 +21,16 @@ defmodule Api.Resolvers do
 
   def me(_parent, _params, %{context: %{current_user: current_user}}) do
     {:ok, token, _claims} = Guardian.encode_and_sign(current_user)
-    {:ok, %{username: current_user.username, token: token}}
+
+    {:ok,
+     %{
+       username: current_user.username,
+       token: token,
+       progress: current_user.progress
+     }}
   end
+
+  def me(_parent, _params, _context), do: {:error, "user not found"}
 
   def create_user(_parent, user, _resolution) do
     case Query.insert(user) do
@@ -34,6 +42,19 @@ defmodule Api.Resolvers do
         {:error, changeset}
     end
   end
+
+  def update_progress(_parent, params, %{context: %{current_user: current_user}}) do
+    case Query.update_progress(current_user.id, %{progress: params}) do
+      {:ok, user} ->
+        {:ok, user}
+
+      error ->
+        IO.inspect(error)
+        error
+    end
+  end
+
+  def update_progress(_, _, _), do: {:error, "user not found"}
 
   defp get_site_scraper(args) do
     case args do
