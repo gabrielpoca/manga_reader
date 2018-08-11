@@ -15,8 +15,7 @@ config :api, Api.Endpoint,
   http: [:inet6, port: {:system, "PORT"}],
   url: [host: "localhost", port: {:system, "PORT"}],
   server: true,
-  root: ".",
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  root: "."
 
 # Do not print debug messages in production
 config :logger, level: :info

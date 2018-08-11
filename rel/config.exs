@@ -20,7 +20,16 @@ release :manga_reader do
     applications: [
       :runtime_tools,
       api: :permanent,
-      scraper: :permanent
+      scraper: :permanent,
+      release_manager: :permanent
+    ]
+  )
+
+  set(pre_start_hook: "rel/commands/migrate.sh")
+
+  set(
+    commands: [
+      migrate: "rel/commands/migrate.sh"
     ]
   )
 end

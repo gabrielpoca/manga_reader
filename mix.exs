@@ -16,7 +16,7 @@ defmodule MangaReader.Mixfile do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    [{:distillery, "~> 1.5.3"}]
+    [{:distillery, "~> 1.5.3", runtime: false}]
   end
 
   defp aliases do

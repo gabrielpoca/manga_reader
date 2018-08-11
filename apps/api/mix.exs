@@ -38,7 +38,7 @@ defmodule Api.Mixfile do
   defp deps do
     [
       {:scraper, in_umbrella: true},
-      {:absinthe, "~> 1.4.0"},
+      {:absinthe, "~> 1.4.13"},
       {:absinthe_plug, "~> 1.4"},
       {:poison, "~> 3.0"},
       {:phoenix, "~> 1.3.3"},

@@ -17,7 +17,7 @@ RUN yarn build
 #
 # build elixir release
 #
-FROM bitwalker/alpine-elixir:1.6.3 as builder
+FROM bitwalker/alpine-elixir:1.6.6 as builder
 
 RUN apk add build-base
 
@@ -39,7 +39,7 @@ RUN mix release --env=prod --verbose
 # final image
 #
 
-FROM bitwalker/alpine-elixir:1.6.3
+FROM bitwalker/alpine-elixir:1.6.6
 
 WORKDIR /app
 
