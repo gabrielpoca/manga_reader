@@ -4,7 +4,6 @@
 }
 
 .header {
-  margin-top: var(--spacing-small);
   margin-bottom: var(--spacing-large);
 
   color: red;
