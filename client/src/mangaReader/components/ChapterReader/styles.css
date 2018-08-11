@@ -16,22 +16,12 @@
   align-items: center;
   height: 90vh;
   justify-content: space-between;
-  max-height: 750px
+  max-height: 750px;
 }
 
 .title {
   text-align: center;
-}
-
-.name {
-  width: 100%;
   padding: 0 var(--spacing-normal);
-}
-
-.chapter {
-  margin-bottom: var(--spacing-xsmall);
-  font-size: var(--fontSize-small);
-  color: var(--text-color);
 }
 
 .chapterName {
@@ -50,27 +40,4 @@
   font-size: var(--fontSize-normal);
   text-decoration: none;
   text-transform: uppercase;
-}
-
-.close {
-  background: rgba(26, 27, 39, .7);;
-  border-radius: 4px;
-  box-sizing: content-box;
-  height: 24px;
-  padding: var(--spacing-xsmall);
-  position: fixed;
-  right: var(--spacing-normal);
-  top: var(--spacing-large);
-  width: 24px;
-}
-
-.closeLabel {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
 }

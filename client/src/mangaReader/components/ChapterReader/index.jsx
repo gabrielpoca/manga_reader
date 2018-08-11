@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { H1, H3 } from '../../../components/Heading';
 import Page from '../Page';
+import Header from '../Header';
 
-const closeIcon = require('./close.svg');
 const styles = require('./styles.css');
 
 class ChapterReader extends React.Component {
@@ -64,26 +64,13 @@ class ChapterReader extends React.Component {
   };
 
   renderChapterName = () => {
-    if (this.props.chapter.name) {
-      return (
-        <div className={styles.title}>
-          <div className={styles.chapter}>
-            Chapter {this.props.chapter.chapterId}
-          </div>
-          <div className={styles.chapterName}>
-            <H1 level="h2">{this.props.chapter.name}</H1>
-          </div>
+    return (
+      <div className={styles.title}>
+        <div className={styles.chapterName}>
+          <H1 level="h2">{this.props.chapter.name}</H1>
         </div>
-      );
-    } else {
-      return (
-        <div className={styles.title}>
-          <div className={styles.chapterName}>
-            <H1 level="h2">Chapter {this.props.chapter.chapterId}</H1>
-          </div>
-        </div>
-      );
-    }
+      </div>
+    );
   };
 
   render() {
@@ -92,13 +79,8 @@ class ChapterReader extends React.Component {
     return (
       <div className={styles.root}>
         <header className={styles.header}>
-          <Link to={`/manga/${manga.mangaId}`} className={styles.close}>
-            <div dangerouslySetInnerHTML={{ __html: closeIcon }} />
-            <span className={styles.closeLabel}>Back</span>
-          </Link>
-          <div className={styles.name}>
-            <H3 level="h1">{manga.name}</H3>
-          </div>
+          <Header chapter={chapter} manga={manga} />
+          <span />
           {this.renderChapterName()}
           <div className={styles.links}>
             {this.renderBack()}
