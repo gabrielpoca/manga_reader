@@ -2,8 +2,8 @@
 }
 
 .content {
-  width: 600px;
-  max-width: var(--maxWidth);
+  width: 100%;
+  max-width: 600px;
   padding: var(--spacing-large) var(--spacing-normal);
   margin: 0 auto;
 }
