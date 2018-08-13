@@ -1,4 +1,4 @@
-defmodule Api.Middlewares.HandleChangesetErrors do
+defmodule Api.Graphql.Middlewares.HandleChangesetErrors do
   @behaviour Absinthe.Middleware
   def call(resolution, _) do
     %{resolution | errors: Enum.flat_map(resolution.errors, &handle_error/1)}

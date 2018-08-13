@@ -1,12 +1,12 @@
-defmodule Api.Web do
+defmodule ApiWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use Api.Web, :controller
-      use Api.Web, :view
+      use ApiWeb, :controller
+      use ApiWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -27,19 +27,6 @@ defmodule Api.Web do
     end
   end
 
-  def controller do
-    quote do
-      use Phoenix.Controller
-
-      alias Api.Repo
-      import Ecto
-      import Ecto.Query
-
-      import Api.Router.Helpers
-      import Api.Gettext
-    end
-  end
-
   def view do
     quote do
       use Phoenix.View, root: "web/templates"
@@ -47,9 +34,9 @@ defmodule Api.Web do
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
-      import Api.Router.Helpers
-      import Api.ErrorHelpers
-      import Api.Gettext
+      import ApiWeb.Router.Helpers
+      import ApiWeb.ErrorHelpers
+      import ApiWeb.Gettext
     end
   end
 
@@ -66,7 +53,7 @@ defmodule Api.Web do
       alias Api.Repo
       import Ecto
       import Ecto.Query
-      import Api.Gettext
+      import ApiWeb.Gettext
     end
   end
 

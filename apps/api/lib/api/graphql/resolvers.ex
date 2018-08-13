@@ -1,4 +1,4 @@
-defmodule Api.Resolvers do
+defmodule Api.Graphql.Resolvers do
   alias Scraper.Sites.MangaReaderNet
   alias Api.Users.Query
   alias Api.Guardian
@@ -49,7 +49,6 @@ defmodule Api.Resolvers do
         {:ok, user}
 
       error ->
-        IO.inspect(error)
         error
     end
   end

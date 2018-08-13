@@ -5,12 +5,11 @@
 # is restricted to this project.
 use Mix.Config
 
-# Configures the endpoint
-config :api, Api.Endpoint,
+config :api, ApiWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base:
     "7U+hZtw6nf3XIwpgdGhQBhzay1K7LhiPMDC7U6ZgMjJs+mUSxNcF0VKiSZi+HluS",
-  render_errors: [view: Api.ErrorView, accepts: ~w(json)],
+  render_errors: [view: ApiWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: Api.PubSub, adapter: Phoenix.PubSub.PG2]
 
 config :api, Api.Guardian,

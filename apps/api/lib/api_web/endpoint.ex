@@ -1,4 +1,4 @@
-defmodule Api.Endpoint do
+defmodule ApiWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :api
 
   plug(
@@ -37,6 +37,6 @@ defmodule Api.Endpoint do
     key: "_api_key",
     signing_salt: "DBoBPP/6"
 
-  plug Api.FrontEndRenderer
-  plug Api.Router
+  plug ApiWeb.FrontEndRenderer
+  plug ApiWeb.Router
 end

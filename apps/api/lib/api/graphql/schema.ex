@@ -1,7 +1,7 @@
-defmodule Api.Schema do
+defmodule Api.Graphql.Schema do
   use Absinthe.Schema
 
-  alias Api.Resolvers
+  alias Api.Graphql.Resolvers
 
   import_types(Api.Schema.Types.JSON)
 
@@ -38,7 +38,7 @@ defmodule Api.Schema do
       arg(:password, non_null(:string))
 
       resolve(&Resolvers.create_user/3)
-      middleware(Api.Middlewares.HandleChangesetErrors)
+      middleware(Api.Graphql.Middlewares.HandleChangesetErrors)
     end
 
     field :update_progress, type: :user do
@@ -46,7 +46,7 @@ defmodule Api.Schema do
       arg(:ongoing_chapter_by_manga_id, non_null(:json))
 
       resolve(&Resolvers.update_progress/3)
-      middleware(Api.Middlewares.HandleChangesetErrors)
+      middleware(Api.Graphql.Middlewares.HandleChangesetErrors)
     end
   end
 

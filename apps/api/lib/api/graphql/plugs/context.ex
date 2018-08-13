@@ -1,4 +1,4 @@
-defmodule Api.Plugs.Context do
+defmodule Api.Graphql.Plugs.Context do
   @behaviour Plug
 
   import Plug.Conn
@@ -20,13 +20,13 @@ defmodule Api.Plugs.Context do
          {:ok, current_user} <- authorize(token) do
       %{current_user: current_user}
     else
-      error -> %{}
+      _error -> %{}
     end
   end
 
   defp authorize(token) do
     case Guardian.resource_from_token(token) do
-      {:ok, user, claims} -> {:ok, user}
+      {:ok, user, _claims} -> {:ok, user}
       _ -> {:error, "invalid authorization token"}
     end
   end

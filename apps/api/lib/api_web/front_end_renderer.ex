@@ -1,4 +1,4 @@
-defmodule Api.FrontEndRenderer do
+defmodule ApiWeb.FrontEndRenderer do
   def init(opts), do: opts
 
   def call(%Plug.Conn{request_path: "/api" <> _} = conn, _opts) do
