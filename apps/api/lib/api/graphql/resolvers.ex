@@ -3,6 +3,8 @@ defmodule Api.Graphql.Resolvers do
   alias Api.Users.Query
   alias Api.Guardian
 
+  import ApiWeb.Gettext
+
   def all(_parent, args, _resolution) do
     {:ok, get_site_scraper(args).all()}
   end
@@ -30,7 +32,8 @@ defmodule Api.Graphql.Resolvers do
      }}
   end
 
-  def me(_parent, _params, _context), do: {:error, "user not found"}
+  def me(_parent, _params, _context),
+    do: {:error, %{message: gettext("user not authenticated"), status: 401}}
 
   def create_user(_parent, user, _resolution) do
     case Query.insert(user) do
@@ -40,6 +43,19 @@ defmodule Api.Graphql.Resolvers do
 
       {:error, changeset} ->
         {:error, changeset}
+    end
+  end
+
+  def authenticate_user(_parent, params, _resolution) do
+    %{username: username, password: password} = params
+
+    case Query.authenticate_user(username, password) do
+      {:ok, user} ->
+        {:ok, token, _claims} = Guardian.encode_and_sign(user)
+        {:ok, Map.put(user, :token, token)}
+
+      _ ->
+        {:error, %{message: gettext("authentication failed"), status: 401}}
     end
   end
 
@@ -53,7 +69,8 @@ defmodule Api.Graphql.Resolvers do
     end
   end
 
-  def update_progress(_, _, _), do: {:error, "user not found"}
+  def update_progress(_, _, _),
+    do: {:error, %{message: gettext("user not authenticated"), status: 401}}
 
   defp get_site_scraper(args) do
     case args do

@@ -37,6 +37,9 @@ defmodule ApiWeb.Endpoint do
     key: "_api_key",
     signing_salt: "DBoBPP/6"
 
-  plug ApiWeb.FrontEndRenderer
+  if Mix.env() == :prod do
+    plug ApiWeb.FrontEndRenderer
+  end
+
   plug ApiWeb.Router
 end

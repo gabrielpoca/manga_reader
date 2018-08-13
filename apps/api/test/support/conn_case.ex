@@ -25,12 +25,12 @@ defmodule Api.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Api.Router.Helpers
+      import ApiWeb.Router.Helpers
       import Api.GraphqlHelper
       import Api.AuthenticationHelper
 
       # The default endpoint for testing
-      @endpoint Api.Endpoint
+      @endpoint ApiWeb.Endpoint
     end
   end
 

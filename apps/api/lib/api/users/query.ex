@@ -18,4 +18,15 @@ defmodule Api.Users.Query do
     |> Schema.progress_changeset(params)
     |> Repo.update()
   end
+
+  def authenticate_user(username, password) do
+    with user <- Repo.get_by!(Schema, username: username),
+         true <- Api.Password.check(password, user.hashed_password) do
+      {:ok, user}
+    else
+      error -> error
+    end
+  rescue
+    _ -> {:error, :not_found}
+  end
 end

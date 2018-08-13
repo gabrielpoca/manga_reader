@@ -41,6 +41,13 @@ defmodule Api.Graphql.Schema do
       middleware(Api.Graphql.Middlewares.HandleChangesetErrors)
     end
 
+    field :authenticate_user, type: :user do
+      arg(:username, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&Resolvers.authenticate_user/3)
+    end
+
     field :update_progress, type: :user do
       arg(:read_chapters_by_manga_id, non_null(:json))
       arg(:ongoing_chapter_by_manga_id, non_null(:json))

@@ -1,7 +1,7 @@
 defmodule Api.GraphqlHelper do
   use Phoenix.ConnTest
 
-  @endpoint Api.Endpoint
+  @endpoint ApiWeb.Endpoint
 
   def graphql_query(conn, options) do
     conn

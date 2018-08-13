@@ -83,5 +83,29 @@ defmodule Api.Features.AuthenticationTest do
                "ongoingChapterByMangaId"
              ]["b"] == "1234"
     end
+
+    test "authenticates a user", %{conn: conn} do
+      Api.Users.Query.insert(%{username: "gabrielpoca", password: "1234"})
+
+      query = """
+        mutation AuthenticateUser($username: String!, $password: String!) {
+          authenticateUser(username: $username, password: $password) {
+            token
+          }
+        }
+      """
+
+      res =
+        conn
+        |> graphql_query(%{
+          query: query,
+          variables: %{
+            username: "gabrielpoca",
+            password: "1234"
+          }
+        })
+
+      assert res["data"]["authenticateUser"]["token"]
+    end
   end
 end
