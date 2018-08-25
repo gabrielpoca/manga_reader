@@ -39,14 +39,14 @@ defmodule Api.Graphql.Resolvers do
     case Query.insert(user) do
       {:ok, user} ->
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
-        {:ok, %{username: user.username, token: token}}
+        {:ok, Map.put(user, :token, token)}
 
       {:error, changeset} ->
         {:error, changeset}
     end
   end
 
-  def authenticate_user(_parent, params, _resolution) do
+  def authenticate_user(_parent, params, _context) do
     %{username: username, password: password} = params
 
     case Query.authenticate_user(username, password) do
@@ -60,7 +60,7 @@ defmodule Api.Graphql.Resolvers do
   end
 
   def update_progress(_parent, params, %{context: %{current_user: current_user}}) do
-    case Query.update_progress(current_user.id, %{progress: params}) do
+    case Query.update_progress(current_user, %{progress: params}) do
       {:ok, user} ->
         {:ok, user}
 

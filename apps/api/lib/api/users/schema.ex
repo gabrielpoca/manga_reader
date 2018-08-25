@@ -29,7 +29,6 @@ defmodule Api.Users.Schema do
     user
     |> cast(params, [])
     |> cast_embed(:progress)
-    |> validate_required([:progress])
   end
 
   defp generate_password_hash(changeset) do
