@@ -21,13 +21,6 @@ class Search extends React.Component {
   };
 
   handleFocus = () => this.setState({ focus: true });
-  handleBlur = () => {
-    if (!this.props.value || this.props.value === '') {
-      this.setState({ focus: false });
-    }
-
-    this.props.onBlur();
-  };
 
   render() {
     const rootClassName = `root ${this.state.focus ? 'focus' : ''}`;
@@ -36,7 +29,6 @@ class Search extends React.Component {
       <label styleName={rootClassName}>
         <input
           name="query"
-          onBlur={this.handleBlur}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
           placeholder="My favorite manga"

@@ -1,7 +1,9 @@
-import { take, call, put, fork } from 'redux-saga/effects';
+import { take, takeLatest, call, put, fork, select } from 'redux-saga/effects';
+import _, { uniq } from 'lodash';
 import { delay } from 'redux-saga';
 import * as API from '../api/queries';
 import * as actions from './actions';
+import * as filters from './reducers';
 import db from '../api/database';
 
 export function* apiRequest(fn) {
@@ -23,21 +25,59 @@ export function* dbRequest(fn) {
   }
 }
 
+function* mangasDBSearch(query) {
+  if (query && query !== '')
+    return yield db.mangas
+      .orderBy('name')
+      .filter(
+        manga => manga.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      )
+      .limit(20)
+      .toArray();
+
+  const ongoingIds = (yield call(dbRequest, () => db.ongoing.toArray())).map(
+    m => m.mangaId
+  );
+
+  const ongoingMangas = yield call(dbRequest, () =>
+    db.mangas
+      .where('mangaId')
+      .anyOf(ongoingIds)
+      .toArray()
+  );
+
+  const mangas = yield db.mangas
+    .orderBy('name')
+    .limit(20)
+    .toArray();
+
+  return _.chain([...ongoingMangas, ...mangas])
+    .uniqBy('mangaId')
+    .take(20)
+    .value();
+}
+
 export function* mangasRoot() {
-  while (yield take('MANGA_ALL_REQUEST')) {
-    let mangas = yield call(dbRequest, () => db.mangas.toArray());
+  yield takeLatest('MANGA_ALL_REQUEST', function*({ payload }) {
+    let searchQuery = payload.query;
+
+    if (searchQuery === undefined)
+      searchQuery = (yield select(filters.getSearchQuery)) || '';
+
+    yield put(actions.search(searchQuery));
+
+    yield delay(500);
+
+    let mangas = yield call(mangasDBSearch, searchQuery);
 
     if (!mangas || mangas.length === 0) {
       mangas = yield call(apiRequest, API.mangas);
       db.mangas.bulkAdd(mangas).catch(err => console.error(err));
+      mangas = yield call(mangasDBSearch, searchQuery);
     }
 
-    if (!!mangas && mangas.length !== 0) {
-      yield put(actions.allMangaSuccess(mangas));
-    } else {
-      yield put(actions.allMangaError());
-    }
-  }
+    yield put(actions.allMangaSuccess(mangas));
+  });
 }
 
 export function* mangaApiRequest(mangaId) {
@@ -72,7 +112,7 @@ function* chapterRoot() {
           API.chapter(payload.mangaId, payload.chapterId)
         );
 
-        yield call(dbRequest, () => db.chapter.put(chapter));
+        yield call(dbRequest, () => db.chapters.put(chapter));
       }
 
       yield put(actions.chapterSuccess(chapter));
@@ -80,8 +120,44 @@ function* chapterRoot() {
   }
 }
 
+function* readingRoot() {
+  while (true) {
+    const { payload } = yield take('MANGA_READING_CHAPTER');
+
+    yield call(dbRequest, () => db.ongoing.put(payload));
+  }
+}
+
+function* readRoot() {
+  while (true) {
+    const { payload } = yield take('MANGA_READ_CHAPTER');
+
+    yield call(dbRequest, () => {
+      db.transaction('rw', db.read, async () => {
+        let read = await db.read.get({ mangaId: payload.mangaId });
+
+        if (!read) read = { mangaId: payload.mangaId, chapters: [] };
+
+        read.chapters.push(payload.chapterId);
+        read.chapters = uniq(read.chapters);
+
+        await db.read.put(read);
+      });
+    });
+  }
+}
+
+function* rehydrate() {
+  const read = yield call(dbRequest, () => db.read.toArray());
+  const ongoing = yield call(dbRequest, () => db.ongoing.toArray());
+  yield put(actions.rehydrate(read, ongoing));
+}
+
 export default function* root() {
+  yield fork(rehydrate);
   yield fork(mangasRoot);
   yield fork(mangaRoot);
   yield fork(chapterRoot);
+  yield fork(readingRoot);
+  yield fork(readRoot);
 }

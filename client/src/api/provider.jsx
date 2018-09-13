@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
+import * as manga from '../manga';
 import Context from './context';
 
 class Provider extends React.Component {
@@ -7,11 +9,13 @@ class Provider extends React.Component {
     super();
 
     this.state = {
-      context: {}
+      context: {},
     };
   }
 
   render() {
+    if (!this.props.ready) return null;
+
     return (
       <Context.Provider value={this.state.context}>
         {this.props.children}
@@ -20,4 +24,6 @@ class Provider extends React.Component {
   }
 }
 
-export default Provider;
+export default connect(state => ({ ready: manga.filters.ready(state) }))(
+  Provider
+);

@@ -1,7 +1,14 @@
+export const rehydrate = (read, ongoing) => {
+  return {
+    type: 'MANGA_REHYDRATE',
+    payload: { read, ongoing },
+  };
+};
+
 export const readingChapter = (mangaId, chapterId) => {
   return {
     type: 'MANGA_READING_CHAPTER',
-    payload: { mangaId, chapterId },
+    payload: { mangaId, chapterId: parseInt(chapterId, 10) },
   };
 };
 
@@ -9,28 +16,28 @@ export const readChapter = (mangaId, chapterId) => {
   return {
     type: 'MANGA_READ_CHAPTER',
     payload: {
-      chapterId,
+      chapterId: parseInt(chapterId, 10),
       mangaId,
     },
   };
 };
 
 export const restoreBackup = (
-  ongoingChapterByMangaId,
-  readChaptersByMangaId
+  ongoingChapter,
+  readChapters
 ) => {
   return {
     type: 'MANGA_RESTORE_BACKUP',
     payload: {
-      ongoingChapterByMangaId,
-      readChaptersByMangaId,
+      ongoingChapter,
+      readChapters,
     },
   };
 };
 
-export const allMangaRequest = () => ({
+export const allMangaRequest = ({ query } = {}) => ({
   type: 'MANGA_ALL_REQUEST',
-  payload: {},
+  payload: { query },
 });
 
 export const allMangaSuccess = mangas => ({
@@ -71,4 +78,9 @@ export const chapterSuccess = chapter => ({
 export const chapterError = () => ({
   type: 'MANGA_CHAPTER_ERROR',
   payload: {},
+});
+
+export const search = (query = '') => ({
+  type: 'MANGA_SEARCH',
+  payload: { query },
 });

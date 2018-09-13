@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 
 import MangaItem from '../MangaItem';
 import Search from '../../../components/Search';
+import { H3 } from '../../../components/Heading';
 
 import styles from './styles.css';
 
@@ -24,15 +25,31 @@ class MangaList extends React.Component {
     }
   };
 
+  renderMangas() {
+    const { search, mangas } = this.props;
+
+    if (mangas.length === 0 && search && search !== '')
+      return (
+        <H3 level="none">
+          I cannot find anything for that query. Try to write it in a different
+          way. It can also be the case that I don't have that manga.
+        </H3>
+      );
+
+    return (
+      <div styleName="list">{this.props.mangas.map(this.renderManga)}</div>
+    );
+  }
+
   render() {
-    const { onBlur, onChange, search } = this.props;
+    const { onChange, search } = this.props;
 
     return (
       <div styleName="root">
         <div styleName="search">
-          <Search onBlur={onBlur} onChange={onChange} value={search} />
+          <Search onChange={onChange} value={search} />
         </div>
-        <div styleName="list">{this.props.mangas.map(this.renderManga)}</div>
+        {this.renderMangas()}
       </div>
     );
   }

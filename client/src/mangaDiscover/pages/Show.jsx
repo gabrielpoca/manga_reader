@@ -42,7 +42,7 @@ const mapStateToProps = (state, props) => {
       state,
       props.match.params.mangaId
     ),
-    manga: manga.filters.byId(state, props.match.params.mangaId),
+    manga: manga.filters.getManga(state, props.match.params.mangaId),
   };
 };
 

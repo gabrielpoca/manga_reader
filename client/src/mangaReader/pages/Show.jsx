@@ -77,7 +77,7 @@ const mapStateToProps = (state, props) => {
   return {
     ongoingChapter: manga.filters.getOngoingChapter(state, mangaId),
     chapter: manga.filters.getChapter(state, mangaId, chapterId),
-    manga: manga.filters.byId(state, mangaId),
+    manga: manga.filters.getManga(state, mangaId),
   };
 };
 

@@ -47,8 +47,8 @@ export default store => next => action => {
 //const syncAccount = async (user, progress) => {
 //try {
 //const newProgress = await updateProgress(
-//progress.ongoingChapterByMangaId,
-//progress.readChaptersByMangaId,
+//progress.ongoingChapter,
+//progress.readChapters,
 //user.token
 //);
 

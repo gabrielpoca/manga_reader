@@ -1,15 +1,41 @@
 import { get, uniq, keys } from 'lodash';
 
 const initialState = {
-  ongoingChapterByMangaId: {},
-  readChaptersByMangaId: {},
+  ongoingChapter: {},
+  readChapters: {},
   all: [],
-  byId: {},
+  mangas: {},
   chapters: {},
+  search: '',
+  ready: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'MANGA_REHYDRATE': {
+      const { ongoing, read } = action.payload;
+
+      const ongoingChapter = ongoing.reduce((memo, m) => {
+        memo[m.mangaId] = m.chapterId;
+        return memo;
+      }, {});
+
+      const readChapters = read.reduce((memo, m) => {
+        memo[m.mangaId] = m.chapters;
+        return memo;
+      }, {});
+
+      return {
+        ...state,
+        ready: true,
+        ongoingChapter,
+        readChapters,
+      };
+    }
+    case 'MANGA_SEARCH': {
+      const { query } = action.payload;
+      return { ...state, search: query };
+    }
     case 'MANGA_ALL_SUCCESS': {
       const { mangas } = action.payload;
       return {
@@ -32,12 +58,12 @@ export default (state = initialState, action) => {
     case 'MANGA_SUCCESS': {
       const { manga } = action.payload;
       const mangaId = manga.mangaId;
-      const existingManga = get(state.byId, mangaId, {});
+      const existingManga = get(state.mangas, mangaId, {});
 
       return {
         ...state,
-        byId: {
-          ...state.byId,
+        mangas: {
+          ...state.mangas,
           [mangaId]: { ...existingManga, ...manga },
         },
       };
@@ -46,31 +72,31 @@ export default (state = initialState, action) => {
       const { mangaId, chapterId } = action.payload;
       return {
         ...state,
-        ongoingChapterByMangaId: {
-          ...state.ongoingChapterByMangaId,
+        ongoingChapter: {
+          ...state.ongoingChapter,
           [mangaId]: parseInt(chapterId, 10),
         },
       };
     }
     case 'MANGA_READ_CHAPTER': {
       const { mangaId, chapterId } = action.payload;
-      const chapters = get(state.readChaptersByMangaId, mangaId, []);
+      const chapters = get(state.readChapters, mangaId, []);
 
       return {
         ...state,
-        readChaptersByMangaId: {
-          ...state.readChaptersByMangaId,
+        readChapters: {
+          ...state.readChapters,
           [mangaId]: uniq([parseInt(chapterId, 10), ...chapters]),
         },
       };
     }
     case 'MANGA_RESTORE_BACKUP': {
-      const { ongoingChapterByMangaId, readChaptersByMangaId } = action.payload;
+      const { ongoingChapter, readChapters } = action.payload;
 
       return {
         ...state,
-        ongoingChapterByMangaId,
-        readChaptersByMangaId,
+        ongoingChapter,
+        readChapters,
       };
     }
     default:
@@ -79,27 +105,31 @@ export default (state = initialState, action) => {
 };
 
 export const getOngoingMangas = state => {
-  return keys(state.manga.ongoingChapterByMangaId);
+  return keys(state.manga.ongoingChapter);
 };
 
 export const getOngoingChapterByManga = state => {
-  return state.manga.ongoingChapterByMangaId;
+  return state.manga.ongoingChapter;
 };
 
 export const getOngoingChapter = (state, mangaId) =>
-  get(state.manga.ongoingChapterByMangaId, mangaId, null);
+  get(state.manga.ongoingChapter, mangaId, null);
 
 export const getReadChaptersForManga = (state, mangaId) =>
-  get(state.manga.readChaptersByMangaId, mangaId) || [];
+  get(state.manga.readChapters, mangaId) || [];
 
 export const getStateForBackup = state => ({
-  readChaptersByMangaId: state.manga.readChaptersByMangaId,
-  ongoingChapterByMangaId: state.manga.ongoingChapterByMangaId,
+  readChapters: state.manga.readChapters,
+  ongoingChapter: state.manga.ongoingChapter,
 });
 
 export const getAllMangas = state => get(state.manga, 'all', []);
 
-export const byId = (state, mangaId) => state.manga.byId[mangaId];
+export const getManga = (state, mangaId) => state.manga.mangas[mangaId];
 
 export const getChapter = (state, mangaId, chapterId) =>
   state.manga.chapters[`${mangaId}_${chapterId}`];
+
+export const getSearchQuery = state => state.manga.search;
+
+export const ready = state => state.manga.ready;
