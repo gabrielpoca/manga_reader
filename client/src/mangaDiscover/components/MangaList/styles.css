@@ -1,3 +1,10 @@
+.root {
+}
+
+.search {
+  margin-bottom: var(--spacing-large);
+}
+
 .list {
   display: grid;
   grid-column-gap: var(--spacing-large);

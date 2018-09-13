@@ -1,30 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as manga from '../../manga';
 import * as notifications from '../../notifications';
 
-import SettingsShow from '../components/SettingsShow';
+import SettingsPage from '../components/SettingsPage';
 
-class Show extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { error: false };
-  }
-
-  async componentDidMount() {
-    if (!navigator.storage) {
-      return;
-    }
-
-    const { usage, quota } = await navigator.storage.estimate();
-
-    this.setState({ percentage: Math.round(usage / quota) });
-  }
-
+class Show extends React.Component {
   exportingData() {
-    const { ongoingMangas, readChapters } = this.props;
+    const { ongoingMangas, readChapters } = this.props.userProgress;
 
     const ongoing = ongoingMangas.reduce((memo, manga) => {
       memo[manga.id] = manga.ongoingChapter;
@@ -76,24 +61,26 @@ class Show extends Component {
 
   render() {
     return (
-      <SettingsShow
+      <SettingsPage
+        {...this.props}
         onRestore={this.handleRestore}
         onBackup={this.handleBackup}
-        usagePercentage={this.state.percentage}
       />
     );
   }
 }
 
 const mapStateToProps = (state, props) => {
-  return manga.filters.getStateForBackup(state);
+  return {
+    userProgress: manga.filters.getStateForBackup(state),
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       restoreBackup: manga.actions.restoreBackup,
-      sendNotification: notifications.actions.sendNotification
+      sendNotification: notifications.actions.sendNotification,
     },
     dispatch
   );

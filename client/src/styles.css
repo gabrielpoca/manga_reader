@@ -1,10 +1,15 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-html, body, :global(#root), :global([data-reactroot='']) {
+html,
+body,
+:global(#root),
+:global([data-reactroot='']) {
   --base: 20px;
 
   --spacing-large: 48px;
@@ -22,11 +27,11 @@ html, body, :global(#root), :global([data-reactroot='']) {
   --fontSize-xlarge-height: 48px;
   --fontSize-xlarge: 36px;
 
-  --color-white: #FFFFFF;
+  --color-white: #ffffff;
   --color-darkBlue: #1a1b27;
   --color-black: #383945;
   --color-lightBlue: #f4f5f7;
-  --color-gray: #AFAFAF;
+  --color-gray: #afafaf;
 
   --maxWidth: 1024px;
 
@@ -39,6 +44,7 @@ html, body, :global(#root), :global([data-reactroot='']) {
   font-family: 'Roboto', sans-serif;
   font-size: var(--fontSize-normal);
   line-height: var(--fontSize-normal-height);
+  color: var(--text-color);
 
   @media (--tablet) {
     --spacing-large: 36px;

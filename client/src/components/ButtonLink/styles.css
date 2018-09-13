@@ -1,0 +1,15 @@
+.root {
+  align-items: center;
+  background-color: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-size: var(--fontSize-normal);
+  line-height: var(--fontSize-normal-height);
+  padding: 0 4px;
+  text-decoration: underline;
+  transition: all 0.2s ease-in-out;
+  width: auto;
+}

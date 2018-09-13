@@ -4,17 +4,13 @@
 
   display: flex;
   justify-content: space-between;
-  height: 50px;
-  padding: 0 var(--spacing-normal);
+  height: 60px;
 }
 
-.search {
-  flex-grow: 1;
-  flex-basis: 0;
+.left {
   display: flex;
   align-items: center;
 }
 
-.menu {
-  flex-grow: 0;
+.right {
 }

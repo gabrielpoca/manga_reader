@@ -1,19 +1,36 @@
-defmodule Scraper.Sites.MangaReaderNet do
-  alias Scraper.Sites.Cache
+defmodule Scraper.Sites.MangaReader do
+  use Scraper.Sites.Requester, url: "https://www.mangareader.net"
 
+  @type simple_manga :: %{
+          manga_id: String.t(),
+          name: String.t(),
+          cover: String.t()
+        }
+
+  @type page :: %{
+          page_id: String.t(),
+          src: String.t()
+        }
+
+  @type simple_chapter :: %{
+          manga_id: String.t(),
+          chapter_id: String.t(),
+          name: String.t()
+        }
+
+  @spec all() :: [simple_manga, ...]
   def all() do
     {:ok, %{body: body}} = get("/alphabetical")
 
     body
-    |> Floki.find("ul.series_alpha li a")
+    |> Floki.find("ul.series_alpha li")
     |> Enum.map(fn n ->
-      href = n |> Floki.attribute("href") |> hd
-      name = n |> Floki.text() |> String.trim()
+      href = n |> Floki.find("a") |> Floki.attribute("href") |> hd
+      name = n |> Floki.find("a") |> Floki.text() |> String.trim()
       manga_id = href |> String.trim("/")
 
       %{
         manga_id: manga_id,
-        href: href,
         name: name,
         cover: "https://s2.mangareader.net/cover/#{href}/#{href}-l0.jpg"
       }
@@ -21,6 +38,36 @@ defmodule Scraper.Sites.MangaReaderNet do
     |> Enum.sort_by(&Map.fetch(&1, :name))
   end
 
+  @spec all() :: [simple_manga, ...]
+  def popular() do
+    {:ok, %{body: body}} = get("/popular")
+
+    body
+    |> Floki.find("#mangaresults .mangaresultinner")
+    |> Enum.map(fn n ->
+      name = n |> Floki.find("h3 a") |> Floki.text() |> String.trim()
+
+      manga_id =
+        n
+        |> Floki.find("h3 a")
+        |> Floki.attribute("href")
+        |> hd
+        |> String.trim("/")
+
+      %{
+        manga_id: manga_id,
+        name: name,
+        cover: "https://s2.mangareader.net/cover/#{manga_id}/#{manga_id}-l0.jpg"
+      }
+    end)
+  end
+
+  @spec manga(String.t()) :: %{
+          chapters: [simple_chapter, ...],
+          cover: String.t(),
+          manga_id: String.t(),
+          name: String.t()
+        }
   def manga(id) do
     href = "/#{id}"
     {:ok, %{body: body}} = get(href)
@@ -36,7 +83,6 @@ defmodule Scraper.Sites.MangaReaderNet do
         %{
           manga_id: id,
           chapter_id: chapter_id,
-          href: href,
           name: name
         }
       end)
@@ -50,10 +96,17 @@ defmodule Scraper.Sites.MangaReaderNet do
       body
       |> Floki.find("#mangaimg img")
       |> Floki.attribute("src")
+      |> hd
 
-    %{manga_id: id, href: href, name: name, chapters: chapters, cover: cover}
+    %{manga_id: id, name: name, chapters: chapters, cover: cover}
   end
 
+  @spec chapter(String.t(), String.t()) :: %{
+          chapter_id: String.t(),
+          manga_id: String.t(),
+          name: String.t(),
+          pages: [page, ...]
+        }
   def chapter(manga_id, chapter_id) do
     {:ok, %{body: first_page}} = get("/#{manga_id}/#{chapter_id}")
 
@@ -86,28 +139,6 @@ defmodule Scraper.Sites.MangaReaderNet do
       chapter_id: chapter_id,
       pages: [parse_page_body(1, first_page) | other_pages]
     }
-  end
-
-  defp get(url) do
-    full_url = "https://www.mangareader.net#{url}"
-
-    case get_from_cache(full_url) do
-      {:not_found} ->
-        {:ok, res} = Tesla.get(full_url)
-        set_in_cache(full_url, res)
-        {:ok, res}
-
-      {:ok, res} ->
-        {:ok, res}
-    end
-  end
-
-  defp get_from_cache(url) do
-    Cache.get(url)
-  end
-
-  defp set_in_cache(url, response) do
-    Cache.set(url, response)
   end
 
   defp parse_page_body(page_id, body) do

@@ -27,7 +27,6 @@ defmodule Api.ConnCase do
 
       import ApiWeb.Router.Helpers
       import Api.GraphqlHelper
-      import Api.AuthenticationHelper
 
       # The default endpoint for testing
       @endpoint ApiWeb.Endpoint

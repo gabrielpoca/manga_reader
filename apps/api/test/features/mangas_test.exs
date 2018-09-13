@@ -21,7 +21,7 @@ defmodule Api.Features.MangasTest do
           })
           |> json_response(200)
 
-        assert Enum.count(res["data"]["mangas"]) == 4634
+        assert Enum.count(res["data"]["mangas"]) == 4769
       end
     end
 

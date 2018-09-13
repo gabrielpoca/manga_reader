@@ -1,33 +1,22 @@
-import * as React from 'react'
-import CSSModues from 'react-css-modules'
+import * as React from 'react';
+import CSSModules from 'react-css-modules';
 
-import Search from '../Search'
-import BackButton from '../BackButton'
-import Menu from '../Menu'
+import BackButton from '../BackButton';
+import Menu from '../Menu';
 
-import styles from './styles.css'
+import styles from './styles.css';
 
-const search = props => (
-  <Search
-    onBlur={props.onBlur}
-    onChange={props.onChange}
-    value={props.search}
-  />
-)
-
-const backNavigation = props => <BackButton to={props.withBackNavigation} />
+const backNavigation = props => <BackButton to={props.withBackNavigation} />;
 
 const Header = props => {
   return (
-    <header className={styles.root}>
-      <div styleName="search">
-        {props.withBackNavigation ? backNavigation(props) : search(props)}
+    <header styleName="root">
+      <div styleName="left">
+        {props.withBackNavigation ? backNavigation(props) : <Menu />}
       </div>
-      <div styleName="menu">
-        <Menu />
-      </div>
+      <div styleName="right" />
     </header>
-  )
-}
+  );
+};
 
-export default CSSModues(Header, styles)
+export default CSSModules(Header, styles);

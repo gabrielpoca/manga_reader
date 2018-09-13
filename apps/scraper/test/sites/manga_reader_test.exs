@@ -1,46 +1,44 @@
-defmodule Scraper.Sites.MangaReaderNetTest do
+defmodule Scraper.Sites.MangaReaderTest do
   use Scraper.VcrCase
 
   import Mock
 
-  alias Scraper.Sites.{MangaReaderNet, Cache}
+  alias Scraper.Sites.{MangaReader, Cache}
 
   describe "all" do
     test "returns little information about every manga" do
-      use_cassette "manga_reader_net_all" do
-        mangas = MangaReaderNet.all()
-        first_manga = mangas |> hd
+      use_cassette "manga_reader_all" do
+        mangas = MangaReader.all()
 
-        assert Enum.count(mangas) == 4634
-        assert first_manga[:manga_id] == "000000-ultra-black"
-        assert first_manga[:cover]
-        assert first_manga[:name]
+        single_manga =
+          mangas |> Enum.find(fn manga -> manga[:manga_id] == "aaa" end)
+
+        assert Enum.count(mangas) == 4769
+        assert single_manga[:cover]
+        assert single_manga[:name]
       end
     end
   end
 
   describe "manga" do
     test "returns detailed information about a single manga" do
-      use_cassette "manga_reader_net_manga" do
-        manga = MangaReaderNet.manga("naruto")
-        chapters = manga[:chapters]
-        first_chapter = chapters |> hd
+      use_cassette "manga_reader_popular" do
+        mangas = MangaReader.popular()
 
-        assert manga[:manga_id] == "naruto"
-        assert manga[:cover]
-        assert manga[:name]
-        assert Enum.count(chapters) == 700
-        assert first_chapter[:chapter_id] == "1"
-        assert first_chapter[:manga_id] == "naruto"
-        assert first_chapter[:name]
+        single_manga =
+          mangas |> Enum.find(fn manga -> manga[:manga_id] == "naruto" end)
+
+        assert Enum.count(mangas) == 30
+        assert single_manga[:cover]
+        assert single_manga[:name]
       end
     end
   end
 
   describe "chapter" do
     test "returns detailed information about a single chapter" do
-      use_cassette "manga_reader_net_chapter" do
-        chapter = MangaReaderNet.chapter("naruto", "1")
+      use_cassette "manga_reader_chapter" do
+        chapter = MangaReader.chapter("naruto", "1")
         pages = chapter[:pages]
         first_page = pages |> hd
 
@@ -56,7 +54,7 @@ defmodule Scraper.Sites.MangaReaderNetTest do
 
   describe "using cache" do
     test "reads from the cache before requesting from the network" do
-      use_cassette "manga_reader_net_cache" do
+      use_cassette "manga_reader_cache" do
         set = fn _url, _res -> {:ok} end
 
         get = fn _url ->
@@ -66,14 +64,14 @@ defmodule Scraper.Sites.MangaReaderNetTest do
         end
 
         with_mock Cache, get: get, set: set do
-          MangaReaderNet.all()
+          MangaReader.all()
           assert_receive :called, 200
         end
       end
     end
 
     test "writes to cache after requesting from the network" do
-      use_cassette "manga_reader_net_cache" do
+      use_cassette "manga_reader_cache" do
         set = fn _url, _res ->
           pid = self()
           Task.async(fn -> send(pid, :called) end)
@@ -83,7 +81,7 @@ defmodule Scraper.Sites.MangaReaderNetTest do
         get = fn _url -> {:not_found} end
 
         with_mock Cache, get: get, set: set do
-          MangaReaderNet.all()
+          MangaReader.all()
           assert_receive :called, 200
         end
       end

@@ -8,7 +8,7 @@
   text-decoration: none;
 
   > a {
-    color: var(--color-black);
+    color: var(--text-color);
   }
 }
 

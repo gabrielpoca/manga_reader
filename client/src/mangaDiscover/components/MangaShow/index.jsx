@@ -68,7 +68,9 @@ class MangaShow extends React.Component {
           {chapters.map((chapter, index) => (
             <ChapterItem
               showRead={this.hasReadChapters}
-              read={readChapters.indexOf(chapter.chapterId) !== -1}
+              read={
+                readChapters.indexOf(parseInt(chapter.chapterId, 10)) !== -1
+              }
               key={chapter.chapterId}
               chapter={chapter}
             />

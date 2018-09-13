@@ -1,6 +1,8 @@
 .root {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 50px;
+  padding-left: calc(var(--spacing-small) + 10px);
 
   background: transparent;
   border: 0;
@@ -9,5 +11,5 @@
 .icon {
   display: inline-block;
   width: 12px;
-  height: 30px;
+  height: 36px;
 }

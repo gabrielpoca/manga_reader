@@ -1,9 +1,5 @@
 defmodule Api.Graphql.Resolvers do
-  alias Scraper.Sites.MangaReaderNet
-  alias Api.Users.Query
-  alias Api.Guardian
-
-  import ApiWeb.Gettext
+  alias Scraper.Sites.MangaReader
 
   def all(_parent, args, _resolution) do
     {:ok, get_site_scraper(args).all()}
@@ -21,64 +17,13 @@ defmodule Api.Graphql.Resolvers do
     {:ok, get_site_scraper(args).chapter(manga_id, chapter_id)}
   end
 
-  def me(_parent, _params, %{context: %{current_user: current_user}}) do
-    {:ok, token, _claims} = Guardian.encode_and_sign(current_user)
-
-    {:ok,
-     %{
-       username: current_user.username,
-       token: token,
-       progress: current_user.progress
-     }}
-  end
-
-  def me(_parent, _params, _context),
-    do: {:error, %{message: gettext("user not authenticated"), status: 401}}
-
-  def create_user(_parent, user, _resolution) do
-    case Query.insert(user) do
-      {:ok, user} ->
-        {:ok, token, _claims} = Guardian.encode_and_sign(user)
-        {:ok, Map.put(user, :token, token)}
-
-      {:error, changeset} ->
-        {:error, changeset}
-    end
-  end
-
-  def authenticate_user(_parent, params, _context) do
-    %{username: username, password: password} = params
-
-    case Query.authenticate_user(username, password) do
-      {:ok, user} ->
-        {:ok, token, _claims} = Guardian.encode_and_sign(user)
-        {:ok, Map.put(user, :token, token)}
-
-      _ ->
-        {:error, %{message: gettext("authentication failed"), status: 401}}
-    end
-  end
-
-  def update_progress(_parent, params, %{context: %{current_user: current_user}}) do
-    case Query.update_progress(current_user, %{progress: params}) do
-      {:ok, user} ->
-        {:ok, user}
-
-      error ->
-        error
-    end
-  end
-
-  def update_progress(_, _, _),
-    do: {:error, %{message: gettext("user not authenticated"), status: 401}}
-
   defp get_site_scraper(args) do
     case args do
       %{site: "mangareader.net"} ->
-        MangaReaderNet
+        MangaReader
 
       _ ->
-        MangaReaderNet
+        MangaReader
     end
   end
 end

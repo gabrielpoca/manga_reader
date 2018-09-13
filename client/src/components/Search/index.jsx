@@ -1,36 +1,36 @@
-import * as React from 'react'
-import CSSModules from 'react-css-modules'
+import * as React from 'react';
+import CSSModules from 'react-css-modules';
 
-const icon = require('./icon.svg')
-const styles = require('./styles.css')
+const icon = require('./icon.svg');
+const styles = require('./styles.css');
 
 class Search extends React.Component {
   constructor() {
-    super()
-    this.state = { focus: false }
+    super();
+    this.state = { focus: false };
   }
 
   componentDidMount() {
     if (this.props.value && this.props.value !== '') {
-      this.setState({ focus: true })
+      this.setState({ focus: true });
     }
   }
 
   handleChange = event => {
-    this.props.onChange(event.target.value)
-  }
+    this.props.onChange(event.target.value);
+  };
 
-  handleFocus = () => this.setState({ focus: true })
+  handleFocus = () => this.setState({ focus: true });
   handleBlur = () => {
     if (!this.props.value || this.props.value === '') {
-      this.setState({ focus: false })
+      this.setState({ focus: false });
     }
 
-    this.props.onBlur()
-  }
+    this.props.onBlur();
+  };
 
   render() {
-    const rootClassName = `root ${this.state.focus ? 'focus' : ''}`
+    const rootClassName = `root ${this.state.focus ? 'focus' : ''}`;
 
     return (
       <label styleName={rootClassName}>
@@ -48,8 +48,8 @@ class Search extends React.Component {
           <span dangerouslySetInnerHTML={{ __html: icon }} />
         </span>
       </label>
-    )
+    );
   }
 }
 
-export default CSSModules(Search, styles, { allowMultiple: true })
+export default CSSModules(Search, styles, { allowMultiple: true });

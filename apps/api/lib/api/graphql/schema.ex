@@ -3,20 +3,7 @@ defmodule Api.Graphql.Schema do
 
   alias Api.Graphql.Resolvers
 
-  import_types(Api.Schema.Types.JSON)
-
   query do
-    field :me, :user do
-      resolve(&Resolvers.me/3)
-    end
-
-    field :authenticate_user, type: :user do
-      arg(:username, non_null(:string))
-      arg(:password, non_null(:string))
-
-      resolve(&Resolvers.authenticate_user/3)
-    end
-
     field :mangas, list_of(:manga_simple) do
       arg(:site, :string)
 
@@ -37,35 +24,6 @@ defmodule Api.Graphql.Schema do
 
       resolve(&Resolvers.chapter/3)
     end
-  end
-
-  mutation do
-    field :create_user, type: :user do
-      arg(:username, non_null(:string))
-      arg(:password, non_null(:string))
-
-      resolve(&Resolvers.create_user/3)
-      middleware(Api.Graphql.Middlewares.HandleChangesetErrors)
-    end
-
-    field :update_progress, type: :user do
-      arg(:read_chapters_by_manga_id, :json)
-      arg(:ongoing_chapter_by_manga_id, :json)
-
-      resolve(&Resolvers.update_progress/3)
-      middleware(Api.Graphql.Middlewares.HandleChangesetErrors)
-    end
-  end
-
-  object :user do
-    field :username, :string
-    field :token, :string
-    field :progress, :progress
-  end
-
-  object :progress do
-    field :read_chapters_by_manga_id, :json
-    field :ongoing_chapter_by_manga_id, :json
   end
 
   object :manga_simple do

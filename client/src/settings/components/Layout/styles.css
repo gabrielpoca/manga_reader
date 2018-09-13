@@ -1,0 +1,16 @@
+.root {
+}
+
+.header {
+}
+
+.title {
+  padding-top: var(--spacing-normal);
+  padding-bottom: var(--spacing-large);
+}
+
+.content {
+  max-width: calc(var(--maxWidth) + var(--spacing-normal) * 2);
+  padding: 0 var(--spacing-normal);
+  margin: 0 auto;
+}

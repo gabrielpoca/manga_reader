@@ -1,0 +1,12 @@
+.root {
+}
+
+.heading {
+  padding-top: var(--spacing-normal);
+}
+
+.heading,
+.info {
+  max-width: 600px;
+  padding-bottom: var(--spacing-small);
+}

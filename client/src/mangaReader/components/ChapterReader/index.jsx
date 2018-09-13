@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { H1, H3 } from '../../../components/Heading';
+import { H1 } from '../../../components/Heading';
 import Page from '../Page';
 import Header from '../Header';
 
@@ -59,8 +59,6 @@ class ChapterReader extends React.Component {
     } else {
       return <span />;
     }
-
-    return null;
   };
 
   renderChapterName = () => {

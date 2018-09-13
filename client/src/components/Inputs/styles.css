@@ -1,0 +1,20 @@
+.input {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+  width: 100%;
+  max-width: 500px;
+  height: var(--spacing-large);
+  border: 1px solid var(--color-black);
+  padding: 0 var(--spacing-small);
+  font-size: var(--fontSize-normal);
+}
+
+.label {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}

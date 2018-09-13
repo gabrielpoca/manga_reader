@@ -1,0 +1,25 @@
+.tabs {
+  display: flex;
+  list-style-type: none;
+  margin-bottom: var(--spacing-large);
+}
+
+.tab {
+  padding: 0 var(--spacing-small);
+  border: 1px solid var(--color-black);
+  border-radius: 8px;
+  height: var(--spacing-large);
+  display: flex;
+  align-items: center;
+  transition: all 0.1s linear;
+  cursor: pointer;
+}
+
+.tabActive {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.tab:not(:last-child) {
+  margin-right: var(--spacing-small);
+}

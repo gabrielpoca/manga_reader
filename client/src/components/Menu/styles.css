@@ -1,4 +1,5 @@
 .root {
+  position: relative;
 }
 
 .link {
@@ -12,11 +13,13 @@
 :global {
   .bm-burger-button {
     position: absolute;
-    top: var(--spacing-small);
-    right: var(--spacing-small);
+    /* top: var(--spacing-small); */
+    left: var(--spacing-small);
+    top: 50%;
 
     width: 32px;
     height: 24px;
+    transform: translateY(-50%);
   }
 
   .bm-burger-bars {
@@ -27,7 +30,7 @@
 
   .bm-cross-button {
     top: var(--spacing-small) !important;
-    right: var(--spacing-small) !important;
+    left: var(--spacing-small) !important;
 
     width: 30px !important;
     height: 30px !important;
@@ -46,11 +49,11 @@
   }
 
   .bm-menu-wrap {
-    top: 0px;
+    top: 0;
   }
 
   .bm-menu {
-    padding: 2.5em 1.5em 0;
+    padding: 80px 0 0;
 
     background: var(--color-black);
 
@@ -68,6 +71,8 @@
   }
 
   .bm-overlay {
+    top: 0;
+
     background: rgba(0, 0, 0, 0.3);
   }
 }

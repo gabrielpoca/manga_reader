@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RequestManga } from '../../api';
 
 import * as manga from '../../manga';
 import Layout from '../components/Layout';
@@ -8,28 +7,28 @@ import Header from '../../components/Header';
 import MangaShow from '../components/MangaShow';
 
 class Show extends React.Component {
+  componentDidMount() {
+    this.props.request(this.props.match.params.mangaId);
+  }
+
   renderHeader() {
     return <Header withBackNavigation="/" />;
   }
 
-  render() {
-    return (
-      <Layout header={this.renderHeader()}>
-        <RequestManga params={{ mangaId: this.props.match.params.mangaId }}>
-          {({ loading, manga, error }) => {
-            if (loading) return null;
+  renderManga() {
+    if (!this.props.manga) return null;
 
-            return (
-              <MangaShow
-                ongoingChapter={this.props.ongoingChapter || false}
-                readChapters={this.props.readChapters || []}
-                manga={manga}
-              />
-            );
-          }}
-        </RequestManga>
-      </Layout>
+    return (
+      <MangaShow
+        ongoingChapter={this.props.ongoingChapter || false}
+        readChapters={this.props.readChapters || []}
+        manga={this.props.manga}
+      />
     );
+  }
+
+  render() {
+    return <Layout header={this.renderHeader()}>{this.renderManga()}</Layout>;
   }
 }
 
@@ -42,8 +41,12 @@ const mapStateToProps = (state, props) => {
     ongoingChapter: manga.filters.getOngoingChapter(
       state,
       props.match.params.mangaId
-    )
+    ),
+    manga: manga.filters.byId(state, props.match.params.mangaId),
   };
 };
 
-export default connect(mapStateToProps)(Show);
+export default connect(
+  mapStateToProps,
+  { request: manga.actions.mangaRequest }
+)(Show);
