@@ -5,32 +5,16 @@ const icon = require('./icon.svg');
 const styles = require('./styles.css');
 
 class Search extends React.Component {
-  constructor() {
-    super();
-    this.state = { focus: false };
+  shouldComponentUpdate(props) {
+    return props.value !== this.props.value;
   }
-
-  componentDidMount() {
-    if (this.props.value && this.props.value !== '') {
-      this.setState({ focus: true });
-    }
-  }
-
-  handleChange = event => {
-    this.props.onChange(event.target.value);
-  };
-
-  handleFocus = () => this.setState({ focus: true });
 
   render() {
-    const rootClassName = `root ${this.state.focus ? 'focus' : ''}`;
-
     return (
-      <label styleName={rootClassName}>
+      <label styleName="root">
         <input
           name="query"
-          onChange={this.handleChange}
-          onFocus={this.handleFocus}
+          onChange={e => this.props.onChange(e.target.value)}
           placeholder="My favorite manga"
           styleName="input"
           type="text"
@@ -39,6 +23,9 @@ class Search extends React.Component {
         <span styleName="icon">
           <span dangerouslySetInnerHTML={{ __html: icon }} />
         </span>
+        <button styleName="clear" onClick={() => this.props.onChange('')}>
+          x
+        </button>
       </label>
     );
   }

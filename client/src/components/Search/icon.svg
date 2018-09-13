@@ -4,7 +4,7 @@
 <g id="Canvas" transform="translate(-25257 -230)">
 <g id="Group">
 <g id="Rectangle">
-<use xlink:href="#path0_fill" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)" fill="#FFFFFF"/>
+<use xlink:href="#path0_fill" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)" fill="#f4f5f7"/>
 <mask id="mask0_outline_ins">
 <use xlink:href="#path0_fill" fill="white" transform="matrix(0.8873 0.461192 -0.467206 0.884148 25287.3 251.544)"/>
 </mask>
@@ -13,7 +13,7 @@
 </g>
 </g>
 <g id="Ellipse">
-<use xlink:href="#path2_fill" transform="translate(25257 230)" fill="#FFFFFF"/>
+<use xlink:href="#path2_fill" transform="translate(25257 230)" fill="#f4f5f7"/>
 <mask id="mask1_outline_ins">
 <use xlink:href="#path2_fill" fill="white" transform="translate(25257 230)"/>
 </mask>
