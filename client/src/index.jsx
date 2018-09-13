@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
-import { Provider as APIProvider } from './api';
+import CoreProvider from './core/provider';
 import { store } from './store';
 
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -12,9 +12,9 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <APIProvider>
+    <CoreProvider>
       <App />
-    </APIProvider>
+    </CoreProvider>
   </Provider>,
   document.getElementById('root')
 );

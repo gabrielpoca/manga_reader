@@ -1,4 +1,12 @@
-import client from './client';
+import { GraphQLClient } from 'graphql-request';
+
+let url = 'http://localhost:4000/api';
+
+if (process.env.NODE_ENV === 'production') {
+  url = '/api';
+}
+
+const client = new GraphQLClient(url, {});
 
 const mangasQuery = `
     query {

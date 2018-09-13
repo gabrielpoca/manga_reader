@@ -1,10 +1,10 @@
 import { take, takeLatest, call, put, fork, select } from 'redux-saga/effects';
 import _, { uniq } from 'lodash';
 import { delay } from 'redux-saga';
-import * as API from '../api/queries';
+import * as API from '../core/queries';
 import * as actions from './actions';
 import * as filters from './reducers';
-import db from '../api/database';
+import db from '../core/database';
 
 export function* apiRequest(fn) {
   while (true) {
@@ -120,11 +120,55 @@ function* chapterRoot() {
   }
 }
 
+function* cacheChapter(mangaId, chapterId) {
+  try {
+    const chapter = yield call(API.chapter, mangaId, chapterId);
+
+    yield call(() => db.chapters.put(chapter));
+
+    const imageCache = yield call(() => caches.open('image-cache'));
+
+    yield call(() =>
+      Promise.all(
+        chapter.pages.map(async page => {
+          const pageResponse = await fetch(page.src, { mode: 'no-cors' });
+          return imageCache.put(page.src, pageResponse);
+        })
+      )
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function* uncacheChapter(mangaId, chapterId) {
+  try {
+    const chapter = yield call(() =>
+      db.chapters.get({ mangaId, chapterId: chapterId + '' })
+    );
+
+    if (!chapter) return;
+
+    const imageCache = yield call(() => caches.open('image-cache'));
+    yield call(() =>
+      Promise.all(
+        chapter.pages.map(async ({ src }) => await imageCache.delete(src))
+      )
+    );
+
+    yield call(() => db.chapters.delete(chapter.chapterId));
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 function* readingRoot() {
   while (true) {
     const { payload } = yield take('MANGA_READING_CHAPTER');
 
     yield call(dbRequest, () => db.ongoing.put(payload));
+    yield fork(cacheChapter, payload.mangaId, payload.chapterId + 1);
+    yield fork(uncacheChapter, payload.mangaId, payload.chapterId - 1);
   }
 }
 

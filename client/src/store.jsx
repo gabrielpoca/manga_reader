@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import { reducer as manga } from './manga';
 import { reducer as notifications } from './notifications';
-import cacheMiddleware from './api/middleware';
+import cacheMiddleware from './core/middleware';
 
 const sagaMiddleware = createSagaMiddleware();
 
