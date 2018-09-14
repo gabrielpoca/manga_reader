@@ -74,10 +74,13 @@ defmodule Scraper.Sites.MangaReader do
 
     chapters =
       body
-      |> Floki.find("#chapterlist a")
+      |> Floki.find("#chapterlist tr:not(.table_head)")
       |> Enum.map(fn n ->
-        href = n |> Floki.attribute("href") |> hd
-        name = n |> Floki.text() |> String.trim()
+        href = n |> Floki.find("a") |> Floki.attribute("href") |> hd
+
+        name =
+          n |> Floki.find("td:first-child") |> Floki.text() |> String.trim()
+
         [_, chapter_id] = Regex.run(~r/\/?.*\/(.*)\/?/, href)
 
         %{
@@ -109,6 +112,7 @@ defmodule Scraper.Sites.MangaReader do
         }
   def chapter(manga_id, chapter_id) do
     {:ok, %{body: first_page}} = get("/#{manga_id}/#{chapter_id}")
+    %{chapters: chapters} = manga(manga_id)
 
     {last_page_nr, ""} =
       first_page
@@ -128,13 +132,8 @@ defmodule Scraper.Sites.MangaReader do
       |> Enum.to_list()
       |> Enum.sort_by(&Map.get(&1, :page_id))
 
-    name =
-      first_page
-      |> Floki.find("#mangainfo h1")
-      |> Floki.text()
-
     %{
-      name: name,
+      name: Enum.find(chapters, fn c -> c.chapter_id == chapter_id end).name,
       manga_id: manga_id,
       chapter_id: chapter_id,
       pages: [parse_page_body(1, first_page) | other_pages]
