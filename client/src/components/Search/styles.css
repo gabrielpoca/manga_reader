@@ -13,6 +13,10 @@
   transition: all .4s ease-in-out;
 }
 
+.form {
+  display: block;
+}
+
 .input {
   display: inline-block;
   width: 100%;

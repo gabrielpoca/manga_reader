@@ -37,14 +37,17 @@ body,
 
   --text-color: var(--color-black);
   --background-color: var(--color-white);
+  --nav-height: calc(68px);
+
   height: 100%;
 
   min-height: 100%;
 
+  color: var(--text-color);
+
   font-family: 'Roboto', sans-serif;
   font-size: var(--fontSize-normal);
   line-height: var(--fontSize-normal-height);
-  color: var(--text-color);
 
   @media (--tablet) {
     --spacing-large: 36px;

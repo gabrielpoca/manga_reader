@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import CSSModules from 'react-css-modules'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import CSSModules from 'react-css-modules';
+import { Link } from 'react-router-dom';
 
-import styles from './styles.css'
-import icon from './icon.svg'
+import styles from './styles.css';
+import icon from './icon.svg';
 
 class Back extends Component {
   render() {
@@ -13,8 +13,8 @@ class Back extends Component {
           <span dangerouslySetInnerHTML={{ __html: icon }} />
         </span>
       </Link>
-    )
+    );
   }
 }
 
-export default CSSModules(Back, styles)
+export default CSSModules(Back, styles);

@@ -1,12 +1,16 @@
 .root {
+  padding-top: calc(var(--nav-height) + var(--spacing-normal));
   padding-bottom: var(--spacing-large);
   margin: 0 auto;
 }
 
 .header {
-  margin-bottom: var(--spacing-large);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 
-  color: red;
+  width: 100%;
 }
 
 .content {

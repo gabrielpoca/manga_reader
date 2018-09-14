@@ -13,12 +13,12 @@
 :global {
   .bm-burger-button {
     position: absolute;
-    /* top: var(--spacing-small); */
-    left: var(--spacing-small);
     top: 50%;
+    left: var(--spacing-normal);
 
-    width: 32px;
-    height: 24px;
+    width: 36px;
+    height: 28px;
+
     transform: translateY(-50%);
   }
 
