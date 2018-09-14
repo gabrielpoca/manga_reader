@@ -84,6 +84,7 @@ export function* mangaApiRequest(mangaId) {
   const manga = yield call(apiRequest, () => API.manga(mangaId));
   yield call(dbRequest, () => db.mangas.update(mangaId, manga));
   yield put(actions.mangaSuccess(manga));
+  yield fork(cacheMangaCover, manga);
 }
 
 export function* mangaRoot() {
@@ -118,6 +119,12 @@ function* chapterRoot() {
       yield put(actions.chapterSuccess(chapter));
     });
   }
+}
+
+function* cacheMangaCover(manga) {
+  const coverCache = yield call(() => caches.open('cover-cache'));
+  const cover = yield call(() => fetch(manga.cover, { mode: 'no-cors' }));
+  return coverCache.put(manga.cover, cover);
 }
 
 function* cacheChapter(mangaId, chapterId) {
