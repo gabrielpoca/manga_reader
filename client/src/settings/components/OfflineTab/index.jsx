@@ -34,8 +34,7 @@ class OfflineTab extends Component {
           saved in this browser.
         </p>
         <p styleName="info">
-          You can <Link to="/settings/backup">make a file backup</Link> that you
-          can restore later.
+          You can make a file backup that you can restore later.
         </p>
         <p styleName="info">
           Before you clear the browser, make sure you create a back-up,

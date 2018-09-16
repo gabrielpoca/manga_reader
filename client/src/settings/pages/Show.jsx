@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as manga from '../../manga';
-import * as notifications from '../../notifications';
 
 import SettingsPage from '../components/SettingsPage';
 
@@ -20,43 +19,11 @@ class Show extends React.Component {
   }
 
   handleBackup = () => {
-    var a = document.createElement('a');
-    document.body.appendChild(a);
-    a.style = 'display: none';
-
-    const json = JSON.stringify(this.exportingData());
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-
-    a.href = url;
-    a.download = 'manga-reader.json';
-    a.click();
-    window.URL.revokeObjectURL(url);
+    return this.props.backup();
   };
 
   handleRestore = file => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      try {
-        const { ongoingMangas, readChapters } = JSON.parse(reader.result);
-        this.props.restoreBackup(ongoingMangas, readChapters);
-        this.props.history.push('/');
-      } catch (e) {
-        this.props.sendNotification(
-          'error',
-          'Something went wrong parsing your file. Please make sure that you have selected a valid back-up.'
-        );
-      }
-    };
-
-    reader.onerror = () =>
-      this.props.sendNotification(
-        'error',
-        'Something went wrong loading your file. Please make sure that you have selected a valid back-up.'
-      );
-
-    reader.readAsText(file);
+    return this.props.restore(file);
   };
 
   render() {
@@ -80,7 +47,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       restoreBackup: manga.actions.restoreBackup,
-      sendNotification: notifications.actions.sendNotification,
+      backup: manga.actions.backup,
+      restore: manga.actions.restoreRequested,
     },
     dispatch
   );

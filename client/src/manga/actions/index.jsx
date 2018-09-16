@@ -22,18 +22,20 @@ export const readChapter = (mangaId, chapterId) => {
   };
 };
 
-export const restoreBackup = (
-  ongoingChapter,
-  readChapters
-) => {
+export const restoreCompleted = (ongoingChapter, readChapters) => {
   return {
-    type: 'MANGA_RESTORE_BACKUP',
+    type: 'MANGA_RESTORE_COMPLETED',
     payload: {
       ongoingChapter,
       readChapters,
     },
   };
 };
+
+export const restoreError = err => ({
+  type: 'MANGA_RESTORE_ERROR',
+  payload: { err },
+});
 
 export const allMangaRequest = ({ query } = {}) => ({
   type: 'MANGA_ALL_REQUEST',
@@ -83,4 +85,14 @@ export const chapterError = () => ({
 export const search = (query = '') => ({
   type: 'MANGA_SEARCH',
   payload: { query },
+});
+
+export const backup = () => ({
+  type: 'MANGA_BACKUP',
+  payload: {},
+});
+
+export const restoreRequested = file => ({
+  type: 'MANGA_RESTORE_REQUESTED',
+  payload: { file },
 });

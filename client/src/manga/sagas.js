@@ -1,6 +1,6 @@
 import { take, takeLatest, call, put, fork, select } from 'redux-saga/effects';
 import _, { uniq } from 'lodash';
-import { delay } from 'redux-saga';
+import { delay, eventChannel, END } from 'redux-saga';
 import * as API from '../core/queries';
 import * as actions from './actions';
 import * as filters from './reducers';
@@ -204,6 +204,63 @@ function* rehydrate() {
   yield put(actions.rehydrate(read, ongoing));
 }
 
+function* backup() {
+  while (yield take('MANGA_BACKUP')) {
+    const state = yield select(filters.getStateForBackup);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+
+    const json = JSON.stringify(state);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download = 'manga-reader.json';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+}
+
+function createFileReaderChannel(file) {
+  const reader = new FileReader();
+
+  return eventChannel(emit => {
+    reader.onload = () => {
+      console.log('here');
+      emit({ result: reader.result });
+      emit(END);
+    };
+
+    reader.onerror = err => {
+      emit({ err });
+      emit(END);
+    };
+
+    const unsubscribe = () => reader.abort();
+
+    reader.readAsText(file);
+
+    return unsubscribe;
+  });
+}
+
+function* restore() {
+  while (true) {
+    const { payload } = yield take('MANGA_RESTORE_REQUESTED');
+    const channel = yield call(createFileReaderChannel, payload.file);
+
+    const { result, err } = yield take(channel);
+
+    if (err) {
+      return yield put(actions.restoreError(err));
+    }
+
+    const { ongoingChapter, readChapters } = JSON.parse(result);
+    yield put(actions.restoreCompleted(ongoingChapter, readChapters));
+  }
+}
+
 export default function* root() {
   yield fork(rehydrate);
   yield fork(mangasRoot);
@@ -211,4 +268,6 @@ export default function* root() {
   yield fork(chapterRoot);
   yield fork(readingRoot);
   yield fork(readRoot);
+  yield fork(backup);
+  yield fork(restore);
 }

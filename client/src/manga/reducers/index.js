@@ -90,7 +90,7 @@ export default (state = initialState, action) => {
         },
       };
     }
-    case 'MANGA_RESTORE_BACKUP': {
+    case 'MANGA_RESTORE_COMPLETED': {
       const { ongoingChapter, readChapters } = action.payload;
 
       return {

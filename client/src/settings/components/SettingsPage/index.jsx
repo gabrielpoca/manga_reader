@@ -27,10 +27,10 @@ class SettingsPage extends React.Component {
             </Tab>
           </TabList>
           <TabPanel>
-            <BackupTab />
+            <BackupTab {...this.props} />
           </TabPanel>
           <TabPanel>
-            <OfflineTab />
+            <OfflineTab {...this.props} />
           </TabPanel>
         </Tabs>
       </Layout>
