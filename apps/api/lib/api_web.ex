@@ -17,16 +17,6 @@ defmodule ApiWeb do
   and import those modules here.
   """
 
-  def model do
-    quote do
-      use Ecto.Schema
-
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-    end
-  end
-
   def view do
     quote do
       use Phoenix.View, root: "web/templates"
@@ -50,9 +40,6 @@ defmodule ApiWeb do
     quote do
       use Phoenix.Channel
 
-      alias Api.Repo
-      import Ecto
-      import Ecto.Query
       import ApiWeb.Gettext
     end
   end

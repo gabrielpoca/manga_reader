@@ -1,6 +1,1 @@
 export SECRET_KEY=l70O0clkdjlsfdsp9fu324lk
-export POSTGRESQL_USER=postgres
-export POSTGRESQL_PASSWORD=postgres
-export POSTGRESQL_DB=manga_reader_test
-export POSTGRESQL_HOST=localhost
-export POSTGRESQL_POOL_SIZE=10

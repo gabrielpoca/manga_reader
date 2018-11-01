@@ -13,7 +13,7 @@ defmodule Scraper.Sites.MangaReaderTest do
         single_manga =
           mangas |> Enum.find(fn manga -> manga[:manga_id] == "aaa" end)
 
-        assert Enum.count(mangas) == 4769
+        assert Enum.count(mangas) == 4898
         assert single_manga[:cover]
         assert single_manga[:name]
       end

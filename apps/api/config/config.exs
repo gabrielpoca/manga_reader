@@ -16,9 +16,6 @@ config :api, Api.Guardian,
   issuer: "api",
   secret_key: {Api.SecretKey, :fetch, []}
 
-config :api, ecto_repos: [Api.Repo]
-config :api, Api.Repo, adapter: Ecto.Adapters.Postgres
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

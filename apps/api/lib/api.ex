@@ -5,7 +5,6 @@ defmodule Api do
     import Supervisor.Spec
 
     children = [
-      supervisor(Api.Repo, []),
       supervisor(ApiWeb.Endpoint, [])
     ]
 

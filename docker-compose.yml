@@ -4,24 +4,9 @@ services:
   manga_reader:
     build:
       context: .
-    depends_on:
-      - db
     ports:
       - '4000:4000'
     environment:
       SECRET_KEY: alsdjo30elwkasdjlsadjad
-      POSTGRESQL_USER: postgres
-      POSTGRESQL_PASSWORD: postgres
-      POSTGRESQL_DB: manga_reader_prod
-      POSTGRESQL_HOST: db
-      POSTGRESQL_POOL_SIZE: 10
       PORT: 4000
       MIX_ENV: prod
-
-  db:
-    command: postgres
-    image: postgres:9.6.2
-    environment:
-      POSTGRES_DB: 'manga_reader_prod'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'

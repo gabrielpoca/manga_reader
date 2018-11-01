@@ -20,23 +20,8 @@ defmodule Api.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Api.Repo
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-
       # The default endpoint for testing
       @endpoint ApiWeb.Endpoint
     end
-  end
-
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Api.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Api.Repo, {:shared, self()})
-    end
-
-    :ok
   end
 end
